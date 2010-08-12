@@ -40,6 +40,8 @@ bool compact_writer_int() {
     cw.end_object();
 
     CHECK_EQUAL(ss.str(), "{\"i\":7}");
+
+    return ok;
 }
 
 bool compact_writer_double() {
@@ -137,8 +139,6 @@ bool compact_writer_all_basic_types() {
     cw.key("s"); cw.value(std::string("std-string"));
     cw.key("n"); cw.value(jsonxx::null);
     cw.end_object();
-
-    std::cout << ss.str() << std::endl;
 
     CHECK_EQUAL(ss.str(),
         "{"

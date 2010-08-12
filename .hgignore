@@ -6,3 +6,4 @@ libjson
 *.o
 tests/test
 tests/test_ok_timestamp
+json.creator.user
