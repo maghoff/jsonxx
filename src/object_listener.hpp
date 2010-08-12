@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace json {
+namespace jsonxx {
 
 // Use this class to accept bools more precisely in an overload-situation.
 // Any pointer -- for example const char* -- is implicitly convertible to

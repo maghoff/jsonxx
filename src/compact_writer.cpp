@@ -1,6 +1,6 @@
 #include "compact_writer.hpp"
 
-namespace json {
+namespace jsonxx {
 
 void write_quoted_string(std::ostream& out, const std::string& str) {
     // TODO: Escaping
@@ -31,6 +31,7 @@ void compact_writer::key(const std::string& name) {
 }
 
 void compact_writer::start_object() {
+    maybe_comma();
     out << '{';
     skip_comma = true;
 }
@@ -40,6 +41,7 @@ void compact_writer::end_object() {
 }
 
 void compact_writer::start_array() {
+    maybe_comma();
     out << '[';
     skip_comma = true;
 }

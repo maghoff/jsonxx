@@ -1,6 +1,6 @@
 #include "object_listener.hpp"
 
-namespace json {
+namespace jsonxx {
 
 object_listener::~object_listener() {
 }
