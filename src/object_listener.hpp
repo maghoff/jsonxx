@@ -5,17 +5,16 @@
 
 namespace jsonxx {
 
-// Use this class to accept bools more precisely in an overload-situation.
-// Any pointer -- for example const char* -- is implicitly convertible to
-// bool by a built-in conversion, which takes precedence to user-defined
-// conversions, such as std::string(const char*).
-struct bool_helper {
+// This type is used to avoid problems with string literals (const char*)
+// implicitly being cast to bool. It is assumed that the user is less likely
+// to use bool values than string literal values.
+struct bool_type {
     bool value;
-
-    bool_helper(bool value_) : value(value_) { }
+    explicit bool_type(bool value_) : value(value_) { }
 };
 
-class null { };
+class null_type { };
+extern null_type null;
 
 class object_listener {
 public:
@@ -32,8 +31,12 @@ public:
     virtual void value(const std::string&) = 0;
     virtual void value(int) = 0;
     virtual void value(double) = 0;
-    virtual void value(bool_helper) = 0;
-    virtual void value(null) = 0;
+    virtual void value(bool_type) = 0;
+    virtual void value(null_type) = 0;
+
+    // If you don't want to use the overloaded interface:
+    void value_bool(bool b) { value(bool_type(b)); }
+    void value_null() { value(null); }
 };
 
 }

@@ -62,11 +62,11 @@ void compact_writer::value(double v) {
     out << v;
 }
 
-void compact_writer::value(bool_helper v) {
+void compact_writer::value(bool_type v) {
     out << v.value;
 }
 
-void compact_writer::value(null) {
+void compact_writer::value(null_type) {
     out << "null";
 }
 

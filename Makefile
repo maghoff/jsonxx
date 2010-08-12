@@ -19,7 +19,7 @@ src/compact_writer.cpp: src/object_listener.hpp src/compact_writer.hpp
 tests/test: src/libjsonxx.so $(TEST_OBJS)
 	g++ -Lsrc -ljsonxx -o $@ $(TEST_OBJS)
 
-tests/test.cpp: src/object_listener.hpp src/compact_writer.hpp
+tests/test.o: src/object_listener.hpp src/compact_writer.hpp
 tests/test.o: CXXFLAGS += -Isrc
 
 tests/test_ok_timestamp: tests/test

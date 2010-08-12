@@ -2,6 +2,8 @@
 
 namespace jsonxx {
 
+null_type null;
+
 object_listener::~object_listener() {
 }
 

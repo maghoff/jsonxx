@@ -29,8 +29,8 @@ public:
     void value(const std::string&);
     void value(int);
     void value(double);
-    void value(bool_helper);
-    void value(null);
+    void value(bool_type);
+    void value(null_type);
 };
 
 void write_quoted_string(std::ostream&, const std::string&);
