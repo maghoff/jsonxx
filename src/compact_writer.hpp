@@ -22,7 +22,9 @@ class compact_writer : public object_listener {
 
 public:
     // This constructor has the following *side effect*:
-    // The boolalpha-flag is *set* on the given ostream.
+    // The boolalpha-flag is *set* on the given ostream. This flag should be
+    // set throughout the JSON generation, to ensure proper formatting
+    // of boolean values.
     compact_writer(std::ostream&);
     ~compact_writer();
 
