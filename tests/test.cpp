@@ -153,6 +153,42 @@ bool compact_writer_all_basic_types() {
     return ok;
 }
 
+bool compact_writer_double_high_precision() {
+    bool ok = true;
+
+    std::stringstream ss;
+    ss.precision(12);
+    jsonxx::compact_writer cw(ss);
+
+    cw.start_object();
+    cw.key("d");
+    cw.value(3.14159265359);
+    cw.end_object();
+
+    CHECK_EQUAL(ss.str(), "{\"d\":3.14159265359}");
+
+    return ok;
+}
+
+bool compact_writer_double_fixed_precision() {
+    bool ok = true;
+
+    std::stringstream ss;
+    ss.setf(std::ios::fixed, std::ios::floatfield);
+    ss.precision(3);
+    jsonxx::compact_writer cw(ss);
+
+    cw.start_object();
+    cw.key("d1");
+    cw.value(3.14159265359);
+    cw.key("d2");
+    cw.value(20.0);
+    cw.end_object();
+
+    CHECK_EQUAL(ss.str(), "{\"d1\":3.142,\"d2\":20.000}");
+
+    return ok;
+}
 
 bool execute(bool(*f)(), const char* f_name) {
     bool result = f();
@@ -175,6 +211,8 @@ int main() {
     ok &= EXEC(compact_writer_std_string);
     ok &= EXEC(compact_writer_null);
     ok &= EXEC(compact_writer_all_basic_types);
+    ok &= EXEC(compact_writer_double_high_precision);
+    ok &= EXEC(compact_writer_double_fixed_precision);
 
     return ok ? 0 : 1;
 }
