@@ -1,0 +1,11 @@
+def build(bld):
+    sources = [
+        'test.cpp'
+    ]
+
+    bld.new_task_gen(features='cxx cprogram',
+                     source='test.cpp',
+                     includes='../src',
+                     uselib_local='jsonxx',
+                     unit_test = 1,
+                     target='test')

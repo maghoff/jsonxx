@@ -1,0 +1,12 @@
+def build(bld):
+    sources = [
+        'object_filter.cpp',
+        'object_listener.cpp',
+        'compact_writer.cpp',
+        'validating_filter.cpp',
+    ]
+
+    bld.new_task_gen(features='cxx cshlib',
+                     source=sources,
+                     target='jsonxx',
+                    )
