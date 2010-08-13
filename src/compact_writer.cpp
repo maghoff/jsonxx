@@ -40,7 +40,6 @@ void compact_writer::end_object() {
 }
 
 void compact_writer::start_array() {
-    maybe_comma();
     out << '[';
     skip_comma = true;
 }

@@ -267,6 +267,41 @@ bool compact_writer_nested_objects_complex() {
     return ok;
 }
 
+bool compact_writer_empty_array() {
+    bool ok = true;
+
+    std::stringstream ss;
+    jsonxx::compact_writer cw(ss);
+
+    cw.start_object();
+    cw.key("a");
+    cw.start_array();
+    cw.end_array();
+    cw.end_object();
+
+    CHECK_EQUAL(ss.str(), "{\"a\":[]}");
+
+    return ok;
+}
+
+bool compact_writer_simple_array() {
+    bool ok = true;
+
+    std::stringstream ss;
+    jsonxx::compact_writer cw(ss);
+
+    cw.start_object();
+    cw.key("a");
+    cw.start_array();
+    cw.value(5);
+    cw.end_array();
+    cw.end_object();
+
+    CHECK_EQUAL(ss.str(), "{\"a\":[5]}");
+
+    return ok;
+}
+
 bool execute(bool(*f)(), const char* f_name) {
     bool result = f();
     if (!result) {
@@ -292,6 +327,7 @@ int main() {
     ok &= EXEC(compact_writer_double_fixed_precision);
     ok &= EXEC(compact_writer_nested_objects);
     ok &= EXEC(compact_writer_nested_objects_complex);
+    ok &= EXEC(compact_writer_simple_array);
 
     return ok ? 0 : 1;
 }
