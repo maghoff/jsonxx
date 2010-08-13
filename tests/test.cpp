@@ -3,6 +3,8 @@
 #include "compact_writer.hpp"
 
 
+// The error messages are formatted like GCC's error messages, to allow an IDE
+// to pick them up as error messages.
 #define CHECK_EQUAL(a, b) \
     if ((a) != (b)) { \
         std::cerr << \
