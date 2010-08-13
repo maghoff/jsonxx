@@ -31,7 +31,6 @@ void compact_writer::key(const std::string& name) {
 }
 
 void compact_writer::start_object() {
-    maybe_comma();
     out << '{';
     skip_comma = true;
 }

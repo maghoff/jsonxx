@@ -190,6 +190,83 @@ bool compact_writer_double_fixed_precision() {
     return ok;
 }
 
+bool compact_writer_nested_objects() {
+    bool ok = true;
+
+    std::stringstream ss;
+    jsonxx::compact_writer cw(ss);
+
+    cw.start_object();
+    cw.key("i1");
+    cw.value(1);
+    cw.key("o");
+    cw.start_object();
+    cw.end_object();
+    cw.end_object();
+
+    CHECK_EQUAL(ss.str(), "{\"i1\":1,\"o\":{}}");
+
+    return ok;
+}
+
+bool compact_writer_nested_objects_complex() {
+    bool ok = true;
+
+    std::stringstream ss;
+    jsonxx::compact_writer cw(ss);
+
+    cw.start_object();
+        cw.key("o1");
+        cw.start_object();
+            cw.key("i");
+            cw.value(1);
+            cw.key("o");
+            cw.start_object();
+                cw.key("i");
+                cw.value(1);
+            cw.end_object();
+        cw.end_object();
+        cw.key("i1");
+        cw.value(7);
+        cw.key("o2");
+        cw.start_object();
+            cw.key("i");
+            cw.value(1);
+            cw.key("o");
+            cw.start_object();
+                cw.key("i");
+                cw.value(1);
+            cw.end_object();
+        cw.end_object();
+        cw.key("i2");
+        cw.value(42);
+        cw.key("i3");
+        cw.value(1337);
+    cw.end_object();
+
+    CHECK_EQUAL(ss.str(),
+        "{"
+            "\"o1\":{"
+                "\"i\":1,"
+                "\"o\":{"
+                    "\"i\":1"
+                "}"
+            "},"
+            "\"i1\":7,"
+            "\"o2\":{"
+                "\"i\":1,"
+                "\"o\":{"
+                    "\"i\":1"
+                "}"
+            "},"
+            "\"i2\":42,"
+            "\"i3\":1337"
+        "}"
+    );
+
+    return ok;
+}
+
 bool execute(bool(*f)(), const char* f_name) {
     bool result = f();
     if (!result) {
@@ -213,6 +290,8 @@ int main() {
     ok &= EXEC(compact_writer_all_basic_types);
     ok &= EXEC(compact_writer_double_high_precision);
     ok &= EXEC(compact_writer_double_fixed_precision);
+    ok &= EXEC(compact_writer_nested_objects);
+    ok &= EXEC(compact_writer_nested_objects_complex);
 
     return ok ? 0 : 1;
 }
