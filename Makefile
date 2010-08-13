@@ -1,6 +1,6 @@
 
 CXXFLAGS = -ggdb
-OBJS = src/object_listener.os src/compact_writer.os src/object_filter.os
+OBJS = src/object_listener.os src/compact_writer.os src/object_filter.os src/validating_filter.os
 TEST_OBJS = tests/test.o
 
 all: src/libjsonxx.so tests/test_ok_timestamp
@@ -16,6 +16,9 @@ src/libjsonxx.so: $(OBJS)
 src/object_filter.cpp: src/object_listener.hpp src/object_filter.hpp
 src/object_listener.cpp: src/object_listener.hpp
 src/compact_writer.cpp: src/object_listener.hpp src/compact_writer.hpp
+src/object_filter.hpp: src/object_listener.hpp
+src/validating_filter.hpp: src/object_filter.hpp
+src/validating_filter.cpp: src/validating_filter.hpp
 
 tests/test: src/libjsonxx.so $(TEST_OBJS)
 	g++ -Lsrc -ljsonxx -o $@ $(TEST_OBJS)
