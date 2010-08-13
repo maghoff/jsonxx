@@ -3,6 +3,7 @@ def build(bld):
         'object_filter.cpp',
         'object_listener.cpp',
         'compact_writer.cpp',
+        'null_object_listener.cpp',
         'validating_filter.cpp',
     ]
 
