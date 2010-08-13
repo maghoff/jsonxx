@@ -7,3 +7,5 @@ src/object_filter.hpp
 src/object_filter.cpp
 src/validating_filter.hpp
 src/validating_filter.cpp
+src/null_object_listener.hpp
+src/null_object_listener.cpp

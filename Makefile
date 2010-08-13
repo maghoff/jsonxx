@@ -1,6 +1,12 @@
 
 CXXFLAGS = -ggdb
-OBJS = src/object_listener.os src/compact_writer.os src/object_filter.os src/validating_filter.os
+OBJS = \
+	src/object_listener.os \
+	src/compact_writer.os \
+	src/null_object_listener.os \
+	src/object_filter.os \
+	src/validating_filter.os
+
 TEST_OBJS = tests/test.o
 
 all: src/libjsonxx.so tests/test_ok_timestamp
