@@ -3,3 +3,5 @@ src/compact_writer.hpp
 src/object_listener.cpp
 src/object_listener.hpp
 tests/test.cpp
+src/object_filter.hpp
+src/object_filter.cpp
