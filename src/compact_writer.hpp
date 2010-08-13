@@ -8,9 +8,17 @@ namespace jsonxx {
 
 class compact_writer : public object_listener {
     std::ostream& out;
-    bool skip_comma;
 
-    void maybe_comma();
+    enum state_t {
+        skip_key_comma,
+        skip_array_comma,
+        other
+    };
+    state_t state;
+
+    void comma_unless(state_t);
+    void maybe_key_comma();
+    void maybe_array_comma();
 
 public:
     // This constructor has the following *side effect*:

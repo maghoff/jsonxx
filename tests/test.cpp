@@ -302,6 +302,71 @@ bool compact_writer_simple_array() {
     return ok;
 }
 
+bool compact_writer_array() {
+    bool ok = true;
+
+    std::stringstream ss;
+    jsonxx::compact_writer cw(ss);
+
+    cw.start_object();
+    cw.key("a");
+    cw.start_array();
+    cw.value(1);
+    cw.value(1);
+    cw.value(2);
+    cw.end_array();
+    cw.key("b");
+    cw.value(3);
+    cw.key("c");
+    cw.start_array();
+    cw.value(5);
+    cw.value(8);
+    cw.value(13);
+    cw.end_array();
+    cw.end_object();
+
+    CHECK_EQUAL(ss.str(), "{\"a\":[1,1,2],\"b\":3,\"c\":[5,8,13]}");
+
+    return ok;
+}
+
+bool compact_writer_complex_nesting() {
+    bool ok = true;
+
+    std::stringstream ss;
+    jsonxx::compact_writer cw(ss);
+
+    cw.start_object();
+    cw.key("a");
+    cw.start_array();
+    cw.value(1);
+    cw.value(1);
+    cw.value(2);
+    cw.start_object();
+        cw.key("a");
+        cw.start_array();
+        cw.value(3);
+        cw.value(5);
+        cw.value(8);
+        cw.end_array();
+        cw.key("c");
+        cw.start_array();
+        cw.value(13);
+        cw.value(21);
+        cw.value(34);
+        cw.end_array();
+    cw.end_object();
+    cw.value(55);
+    cw.value(89);
+    cw.value(144);
+    cw.end_array();
+    cw.end_object();
+
+    CHECK_EQUAL(ss.str(), "{\"a\":[1,1,2,{\"a\":[3,5,8],\"c\":[13,21,34]},55,89,144]}");
+
+    return ok;
+}
+
 bool execute(bool(*f)(), const char* f_name) {
     bool result = f();
     if (!result) {
@@ -327,7 +392,10 @@ int main() {
     ok &= EXEC(compact_writer_double_fixed_precision);
     ok &= EXEC(compact_writer_nested_objects);
     ok &= EXEC(compact_writer_nested_objects_complex);
+    ok &= EXEC(compact_writer_empty_array);
     ok &= EXEC(compact_writer_simple_array);
+    ok &= EXEC(compact_writer_array);
+    ok &= EXEC(compact_writer_complex_nesting);
 
     return ok ? 0 : 1;
 }
