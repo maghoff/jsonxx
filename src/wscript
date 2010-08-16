@@ -1,3 +1,6 @@
+#!/bin/env python
+# -*- coding: utf-8 -*-
+
 def build(bld):
     sources = [
         'object_filter.cpp',
@@ -7,7 +10,14 @@ def build(bld):
         'validating_filter.cpp',
     ]
 
-    bld.new_task_gen(features='cxx cshlib',
-                     source=sources,
-                     target='jsonxx',
-                    )
+    obj = bld.new_task_gen(
+        features='cxx cshlib',
+        source=sources,
+        target='jsonxx',
+    )
+
+    # This is a bit of a peculiar waf-thing. The build
+    # task is automatically configured to run in the
+    # default-configuration, but it needs this line in
+    # order to build in the debug-configuration:
+    obj.clone('debug')
