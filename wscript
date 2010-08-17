@@ -39,15 +39,21 @@ class gcc_configurator:
 class msvc_configurator:
     @staticmethod
     def debug_mode(env):
+        env.append_unique('CXXFLAGS', '/MDd')
+        env.append_unique('CXXFLAGS', '/Od')
+        env.append_unique('CXXFLAGS', '/Zi')
+        env.append_unique('CXXFLAGS', '/RTC1')
+        env.append_unique('LINKFLAGS', '/DEBUG')
         env.append_unique('CXXDEFINES', 'DEBUG')
 
     @staticmethod
     def release_mode(env):
+        env.append_unique('CXXFLAGS', '/MD')
         env.append_unique('CXXDEFINES', 'NDEBUG')
 
     @staticmethod
     def optimize(env):
-        pass
+        env.append_unique('CXXFLAGS', '/O2')
 
     @staticmethod
     def many_warnings(env):
