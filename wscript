@@ -70,7 +70,8 @@ class msvc_configurator:
 
     @staticmethod
     def warnings_as_errors(env):
-        pass
+        env.append_unique('CXXFLAGS', '/WX')
+        env.append_unique('LINKFLAGS', '/WX')
 
 
 def configure(conf):

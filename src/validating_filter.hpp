@@ -7,6 +7,14 @@
 
 #include "declspec.hpp"
 
+#ifdef WIN32
+#pragma warning(push)
+// C4251: Warning about std::stack<state_t> not being dll-exported.
+//     This is irrelevant in our case, since the stack is not
+//     accessible to users (even subclasses) of this class.
+#pragma warning(disable: 4251)
+#endif
+
 namespace jsonxx {
 
 class validation_error : public std::runtime_error {
@@ -56,6 +64,10 @@ public:
 };
 
 } // namespace jsonxx
+
+#ifdef WIN32
+#pragma warning(pop)
+#endif
 
 #undef JSONXX_DECLSPEC
 
