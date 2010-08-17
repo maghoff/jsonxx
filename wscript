@@ -36,11 +36,34 @@ class gcc_configurator:
         env.append_unique('LINKFLAGS', '-Werror')
 
 
+class msvc_configurator:
+    @staticmethod
+    def debug_mode(env):
+        env.append_unique('CXXDEFINES', 'DEBUG')
+
+    @staticmethod
+    def release_mode(env):
+        env.append_unique('CXXDEFINES', 'NDEBUG')
+
+    @staticmethod
+    def optimize(env):
+        pass
+
+    @staticmethod
+    def many_warnings(env):
+        pass
+
+    @staticmethod
+    def warnings_as_errors(env):
+        pass
+
+
 def configure(conf):
     conf.check_tool('compiler_cxx')
 
     compiler_configurators = {
         'gcc': gcc_configurator,
+        'msvc': msvc_configurator,
     }
 
     cc = compiler_configurators[conf.env['CXX_NAME']]

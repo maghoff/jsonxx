@@ -16,7 +16,7 @@ struct bool_type {
 };
 
 class null_type { };
-extern null_type null;
+extern JSONXX_DECLSPEC null_type null;
 
 class JSONXX_DECLSPEC object_listener {
 public:
