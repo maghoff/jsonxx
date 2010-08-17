@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "declspec.hpp"
+
 namespace jsonxx {
 
 // This type is used to avoid problems with string literals (const char*)
@@ -16,7 +18,7 @@ struct bool_type {
 class null_type { };
 extern null_type null;
 
-class object_listener {
+class JSONXX_DECLSPEC object_listener {
 public:
     virtual ~object_listener();
 
@@ -40,6 +42,8 @@ public:
 };
 
 } // namespace jsonxx
+
+#undef JSONXX_DECLSPEC
 
 #endif // JSONXX_OBJECT_LISTENER_HPP
 

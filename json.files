@@ -9,3 +9,5 @@ src/validating_filter.hpp
 src/validating_filter.cpp
 src/null_object_listener.hpp
 src/null_object_listener.cpp
+src/platform.hpp
+src/declspec.hpp

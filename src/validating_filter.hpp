@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include "object_filter.hpp"
 
+#include "declspec.hpp"
+
 namespace jsonxx {
 
 class validation_error : public std::runtime_error {
@@ -19,7 +21,7 @@ public:
    state, where no more errors are reported and no events are propagated to
    the target listener.
 */
-class validating_filter : public object_filter {
+class JSONXX_DECLSPEC validating_filter : public object_filter {
     enum state_t {
         initial,
         expecting_key,
@@ -54,6 +56,8 @@ public:
 };
 
 } // namespace jsonxx
+
+#undef JSONXX_DECLSPEC
 
 #endif // JSONXX_VALIDATING_FILTER_HPP
 

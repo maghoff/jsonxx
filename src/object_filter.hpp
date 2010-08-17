@@ -3,10 +3,12 @@
 
 #include "object_listener.hpp"
 
+#include "declspec.hpp"
+
 namespace jsonxx {
 
 // The lifetime of the target-object must be controlled outside of this class.
-class object_filter : public object_listener {
+class JSONXX_DECLSPEC object_filter : public object_listener {
 public:
     object_filter();
     object_filter(object_listener* target);
@@ -32,6 +34,8 @@ public:
 };
 
 } // namespace jsonxx
+
+#undef JSONXX_DECLSPEC
 
 #endif // JSONXX_OBJECT_FILTER_HPP
 

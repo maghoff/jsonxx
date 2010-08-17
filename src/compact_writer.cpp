@@ -22,7 +22,7 @@ compact_writer::~compact_writer() {
 
 void compact_writer::comma_unless(state_t s) {
     if (state == s) state = other;
-    else out << ',';
+    else out << ',' << JSONXX_LINK_VARIANT;
 }
 
 void compact_writer::maybe_key_comma() {

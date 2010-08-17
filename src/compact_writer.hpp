@@ -4,9 +4,11 @@
 #include <ostream>
 #include "object_listener.hpp"
 
+#include "declspec.hpp"
+
 namespace jsonxx {
 
-class compact_writer : public object_listener {
+class JSONXX_DECLSPEC compact_writer : public object_listener {
     std::ostream& out;
 
     enum state_t {
@@ -43,9 +45,11 @@ public:
     void value(null_type);
 };
 
-void write_quoted_string(std::ostream&, const std::string&);
+JSONXX_DECLSPEC void write_quoted_string(std::ostream&, const std::string&);
 
 } // namespace jsonxx
+
+#undef JSONXX_DECLSPEC
 
 #endif // JSONXX_COMPACT_WRITER_HPP
 

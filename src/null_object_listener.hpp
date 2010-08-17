@@ -3,10 +3,12 @@
 
 #include "object_listener.hpp"
 
+#include "declspec.hpp"
+
 namespace jsonxx {
 
 // This object_listener does nothing, and is useful for testing filters.
-class null_object_listener : public object_listener {
+class JSONXX_DECLSPEC null_object_listener : public object_listener {
 public:
     null_object_listener();
 
@@ -26,6 +28,8 @@ public:
 };
 
 } // namespace jsonxx
+
+#undef JSONXX_DECLSPEC
 
 #endif // JSONXX_NULL_OBJECT_LISTENER_HPP
 
