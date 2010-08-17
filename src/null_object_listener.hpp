@@ -27,4 +27,5 @@ public:
 
 } // namespace jsonxx
 
-#endif // NULL_OBJECT_LISTENER_HPP
+#endif // JSONXX_NULL_OBJECT_LISTENER_HPP
+

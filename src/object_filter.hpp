@@ -33,4 +33,5 @@ public:
 
 } // namespace jsonxx
 
-#endif // OBJECT_FILTER_HPP
+#endif // JSONXX_OBJECT_FILTER_HPP
+

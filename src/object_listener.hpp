@@ -1,5 +1,5 @@
-#ifndef JSON_SRC_OBJECT_LISTENER_HPP
-#define JSON_SRC_OBJECT_LISTENER_HPP
+#ifndef JSONXX_OBJECT_LISTENER_HPP
+#define JSONXX_OBJECT_LISTENER_HPP
 
 #include <string>
 
@@ -39,6 +39,7 @@ public:
     void value_null() { value(null); }
 };
 
-}
+} // namespace jsonxx
 
-#endif
+#endif // JSONXX_OBJECT_LISTENER_HPP
+

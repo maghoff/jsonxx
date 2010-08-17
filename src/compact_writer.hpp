@@ -1,5 +1,5 @@
-#ifndef JSONXX_SRC_COMPACT_WRITER_HPP
-#define JSONXX_SRC_COMPACT_WRITER_HPP
+#ifndef JSONXX_COMPACT_WRITER_HPP
+#define JSONXX_COMPACT_WRITER_HPP
 
 #include <ostream>
 #include "object_listener.hpp"
@@ -45,7 +45,7 @@ public:
 
 void write_quoted_string(std::ostream&, const std::string&);
 
-}
+} // namespace jsonxx
 
-#endif
+#endif // JSONXX_COMPACT_WRITER_HPP
 

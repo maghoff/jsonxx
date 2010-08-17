@@ -55,4 +55,5 @@ public:
 
 } // namespace jsonxx
 
-#endif // VALIDATING_FILTER_HPP
+#endif // JSONXX_VALIDATING_FILTER_HPP
+
