@@ -12,6 +12,10 @@ def set_options(opt):
 
 class gcc_configurator:
     @staticmethod
+    def sane_default(env):
+        pass
+
+    @staticmethod
     def debug_mode(env):
         env.append_unique('CXXFLAGS', '-ggdb')
         env.append_unique('CXXDEFINES', 'DEBUG')
@@ -37,6 +41,11 @@ class gcc_configurator:
 
 
 class msvc_configurator:
+    @staticmethod
+    def sane_default(env):
+        env.append_unique('CXXFLAGS', '/GR') # Enable RTTI
+        env.append_unique('CXXFLAGS', '/GS') # Buffer Security Check
+
     @staticmethod
     def debug_mode(env):
         env.append_unique('CXXFLAGS', '/MDd')
@@ -73,6 +82,8 @@ def configure(conf):
     }
 
     cc = compiler_configurators[conf.env['CXX_NAME']]
+
+    cc.sane_default(conf.env)
 
     cc.many_warnings(conf.env)
     cc.warnings_as_errors(conf.env)
