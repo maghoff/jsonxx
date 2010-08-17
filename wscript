@@ -39,6 +39,10 @@ class gcc_configurator:
         env.append_unique('CXXFLAGS', '-Werror')
         env.append_unique('LINKFLAGS', '-Werror')
 
+    @staticmethod
+    def link_time_code_generation(env):
+        pass
+
 
 class msvc_configurator:
     @staticmethod
@@ -73,6 +77,11 @@ class msvc_configurator:
         env.append_unique('CXXFLAGS', '/WX')
         env.append_unique('LINKFLAGS', '/WX')
 
+    @staticmethod
+    def link_time_code_generation(env):
+        env.append_unique('CXXFLAGS', '/GL')
+        env.append_unique('LINKFLAGS', '/LTCG')
+
 
 def configure(conf):
     conf.check_tool('compiler_cxx')
@@ -94,6 +103,7 @@ def configure(conf):
     conf.set_env_name('default', rel_env)
     cc.release_mode(rel_env)
     cc.optimize(rel_env)
+    cc.link_time_code_generation(rel_env)
 
     deb_env = conf.env.copy()
     deb_env.set_variant('debug')
