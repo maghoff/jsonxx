@@ -41,6 +41,11 @@ class gcc_configurator:
 
     @staticmethod
     def link_time_code_generation(env):
+        # This is available in GCC 4.5, and is called LTO.
+
+        # WHOPR, which is also available in GCC 4.5, is a more scalable
+        # alternative, but it optimizes less
+
         pass
 
 
