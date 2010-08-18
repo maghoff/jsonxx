@@ -50,6 +50,9 @@ class msvc_configurator:
         env.append_unique('CXXFLAGS', '/GR') # Enable RTTI
         env.append_unique('CXXFLAGS', '/GS') # Buffer Security Check
 
+        env.append_unique('MSVC_VERSIONS', 'msvc 9.0')
+        env.append_unique('MSVC_TARGETS', 'x86')
+
     @staticmethod
     def debug_mode(env):
         env.append_unique('CXXFLAGS', '/MDd')
