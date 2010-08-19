@@ -9,7 +9,6 @@ indenting_writer::indenting_writer(std::ostream& out_) :
     state(in_key_value_pair),
     indentation_level(0)
 {
-    out << std::boolalpha;
 }
 
 indenting_writer::~indenting_writer() {

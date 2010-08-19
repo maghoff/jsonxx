@@ -8,7 +8,6 @@ compact_writer::compact_writer(std::ostream& out_) :
     writer_base(out_),
     state(skip_array_comma)
 {
-    out << std::boolalpha;
 }
 
 compact_writer::~compact_writer() {

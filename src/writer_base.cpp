@@ -6,6 +6,7 @@ namespace jsonxx {
 writer_base::writer_base(std::ostream& out_) :
     out(out_)
 {
+    out << std::boolalpha;
 }
 
 writer_base::~writer_base() {

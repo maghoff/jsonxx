@@ -16,6 +16,10 @@ protected:
     virtual void prepare_for_value() = 0;
 
 public:
+    // This constructor has the following *side effect*:
+    // The boolalpha-flag is *set* on the given ostream. This flag should be
+    // set throughout the JSON generation, to ensure proper formatting
+    // of boolean values.
     writer_base(std::ostream&);
     ~writer_base();
 
