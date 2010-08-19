@@ -3,9 +3,17 @@ def build(bld):
         'test.cpp'
     ]
 
-    bld.new_task_gen(features='cxx cprogram',
-                     source='test.cpp',
-                     includes='../src',
-                     uselib_local='jsonxx',
-                     unit_test = 1,
-                     target='test')
+    obj = bld.new_task_gen(
+        features = 'cxx cprogram',
+        source = 'test.cpp',
+        includes = '../src',
+        uselib_local = 'jsonxx',
+        unit_test = 1,
+        target = 'test'
+    )
+
+    # This is a bit of a peculiar waf-thing. The build
+    # task is automatically configured to run in the
+    # default-configuration, but it needs this line in
+    # order to build in the debug-configuration:
+    obj.clone('debug')
