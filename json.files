@@ -24,3 +24,4 @@ tests/test_util.cpp
 tests/indenting_writer.cpp
 src/writer_base.hpp
 src/writer_base.cpp
+tests/raii.cpp

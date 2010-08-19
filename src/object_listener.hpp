@@ -51,6 +51,20 @@ public:
     }
 };
 
+class scoped_object {
+    object_listener& obj;
+public:
+    scoped_object(object_listener& obj_) : obj(obj_) { obj.start_object(); }
+    ~scoped_object() { obj.end_object(); }
+};
+
+class scoped_array {
+    object_listener& obj;
+public:
+    scoped_array(object_listener& obj_) : obj(obj_) { obj.start_array(); }
+    ~scoped_array() { obj.end_array(); }
+};
+
 } // namespace jsonxx
 
 #undef JSONXX_DECLSPEC
