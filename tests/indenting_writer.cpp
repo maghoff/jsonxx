@@ -84,6 +84,66 @@ bool list() {
     return ok;
 }
 
+bool complex_nesting_all_types() {
+    bool ok = true;
+
+    std::stringstream ss;
+    jsonxx::indenting_writer cw(ss);
+
+    cw.start_object();
+    cw.key("a");
+    cw.start_array();
+    cw.value(1);
+    cw.value(1.5);
+    cw.value_bool(true);
+    cw.start_object();
+        cw.key("a");
+        cw.start_array();
+        cw.value(jsonxx::null);
+        cw.value("str");
+        cw.value(1.4);
+        cw.end_array();
+        cw.key("c");
+        cw.start_array();
+        cw.value_bool(false);
+        cw.value(21);
+        cw.value(std::string("std"));
+        cw.end_array();
+    cw.end_object();
+    cw.value(0.7);
+    cw.value(89);
+    cw.value(jsonxx::null);
+    cw.end_array();
+    cw.end_object();
+
+    CHECK_EQUAL(ss.str(),
+        "{\n"
+        "    \"a\": [\n"
+        "        1,\n"
+        "        1.5,\n"
+        "        true,\n"
+        "        {\n"
+        "            \"a\": [\n"
+        "                null,\n"
+        "                \"str\",\n"
+        "                1.4\n"
+        "            ],\n"
+        "            \"c\": [\n"
+        "                false,\n"
+        "                21,\n"
+        "                \"std\"\n"
+        "            ]\n"
+        "        },\n"
+        "        0.7,\n"
+        "        89,\n"
+        "        null\n"
+        "    ]\n"
+        "}"
+    );
+
+    return ok;
+}
+
 }
 
 bool indenting_writer_tests() {
@@ -95,6 +155,7 @@ bool indenting_writer_tests() {
     ok &= E(simple);
     ok &= E(several);
     ok &= E(list);
+    ok &= E(complex_nesting_all_types);
 
     return ok;
 }
