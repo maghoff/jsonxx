@@ -1,16 +1,13 @@
 #ifndef JSONXX_COMPACT_WRITER_HPP
 #define JSONXX_COMPACT_WRITER_HPP
 
-#include <ostream>
-#include "object_listener.hpp"
+#include "writer_base.hpp"
 
 #include "declspec.hpp"
 
 namespace jsonxx {
 
-class JSONXX_DECLSPEC compact_writer : public object_listener {
-    std::ostream& out;
-
+class JSONXX_DECLSPEC compact_writer : public writer_base {
     enum state_t {
         skip_key_comma,
         skip_array_comma,
@@ -19,8 +16,8 @@ class JSONXX_DECLSPEC compact_writer : public object_listener {
     state_t state;
 
     void comma_unless(state_t);
-    void maybe_key_comma();
-    void maybe_array_comma();
+    void prepare_for_key();
+    void prepare_for_value();
 
 public:
     // This constructor has the following *side effect*:
@@ -33,16 +30,7 @@ public:
     void key(const std::string&);
 
     void start_object();
-    void end_object();
-
     void start_array();
-    void end_array();
-
-    void value(const std::string&);
-    void value(int);
-    void value(double);
-    void value(bool_type);
-    void value(null_type);
 };
 
 } // namespace jsonxx

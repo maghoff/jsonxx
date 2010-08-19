@@ -1,15 +1,13 @@
 #ifndef JSONXX_INDENTING_WRITER_HPP
 #define JSONXX_INDENTING_WRITER_HPP
 
-#include "object_listener.hpp"
+#include "writer_base.hpp"
 
 #include "declspec.hpp"
 
 namespace jsonxx {
 
-class JSONXX_DECLSPEC indenting_writer : public object_listener {
-    std::ostream& out;
-
+class JSONXX_DECLSPEC indenting_writer : public writer_base {
     enum state_t {
         start_of_object,
         in_key_value_pair,
@@ -39,12 +37,6 @@ public:
 
     void start_array();
     void end_array();
-
-    void value(const std::string&);
-    void value(int);
-    void value(double);
-    void value(bool_type);
-    void value(null_type);
 };
 
 } // namespace jsonxx

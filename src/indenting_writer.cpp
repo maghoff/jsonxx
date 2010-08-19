@@ -5,7 +5,7 @@
 namespace jsonxx {
 
 indenting_writer::indenting_writer(std::ostream& out_) :
-    out(out_),
+    writer_base(out_),
     state(in_key_value_pair),
     indentation_level(0)
 {
@@ -49,15 +49,13 @@ void indenting_writer::prepare_for_value() {
 }
 
 void indenting_writer::key(const std::string& name) {
-    prepare_for_key();
-    write_quoted_string(out, name);
-    out << ": ";
+    writer_base::key(name);
+    out << ' ';
     state = in_key_value_pair;
 }
 
 void indenting_writer::start_object() {
-    prepare_for_value();
-    out << '{';
+    writer_base::start_object();
     state = start_of_object;
     indentation_level++;
 }
@@ -65,12 +63,11 @@ void indenting_writer::start_object() {
 void indenting_writer::end_object() {
     indentation_level--;
     newline();
-    out << '}';
+    writer_base::end_object();
 }
 
 void indenting_writer::start_array() {
-    prepare_for_value();
-    out << '[';
+    writer_base::start_array();
     state = start_of_array;
     indentation_level++;
 }
@@ -78,32 +75,7 @@ void indenting_writer::start_array() {
 void indenting_writer::end_array() {
     indentation_level--;
     newline();
-    out << ']';
-}
-
-void indenting_writer::value(const std::string& v) {
-    prepare_for_value();
-    write_quoted_string(out, v);
-}
-
-void indenting_writer::value(int v) {
-    prepare_for_value();
-    out << v;
-}
-
-void indenting_writer::value(double v) {
-    prepare_for_value();
-    out << v;
-}
-
-void indenting_writer::value(bool_type v) {
-    prepare_for_value();
-    out << v.value;
-}
-
-void indenting_writer::value(null_type) {
-    prepare_for_value();
-    out << "null";
+    writer_base::end_array();
 }
 
 }

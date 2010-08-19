@@ -5,7 +5,7 @@
 namespace jsonxx {
 
 compact_writer::compact_writer(std::ostream& out_) :
-    out(out_),
+    writer_base(out_),
     state(skip_array_comma)
 {
     out << std::boolalpha;
@@ -20,64 +20,27 @@ void compact_writer::comma_unless(state_t s) {
     else out << ',';
 }
 
-void compact_writer::maybe_key_comma() {
+void compact_writer::prepare_for_key() {
     comma_unless(skip_key_comma);
 }
 
-void compact_writer::maybe_array_comma() {
+void compact_writer::prepare_for_value() {
     comma_unless(skip_array_comma);
 }
 
 void compact_writer::key(const std::string& name) {
-    maybe_key_comma();
-    write_quoted_string(out, name);
-    out << ':';
+    writer_base::key(name);
     state = skip_array_comma;
 }
 
 void compact_writer::start_object() {
-    maybe_array_comma();
-    out << '{';
+    writer_base::start_object();
     state = skip_key_comma;
 }
 
-void compact_writer::end_object() {
-    out << '}';
-}
-
 void compact_writer::start_array() {
-    maybe_array_comma();
-    out << '[';
+    writer_base::start_array();
     state = skip_array_comma;
-}
-
-void compact_writer::end_array() {
-    out << ']';
-}
-
-void compact_writer::value(const std::string& v) {
-    maybe_array_comma();
-    write_quoted_string(out, v);
-}
-
-void compact_writer::value(int v) {
-    maybe_array_comma();
-    out << v;
-}
-
-void compact_writer::value(double v) {
-    maybe_array_comma();
-    out << v;
-}
-
-void compact_writer::value(bool_type v) {
-    maybe_array_comma();
-    out << v.value;
-}
-
-void compact_writer::value(null_type) {
-    maybe_array_comma();
-    out << "null";
 }
 
 }
