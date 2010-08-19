@@ -144,6 +144,31 @@ bool complex_nesting_all_types() {
     return ok;
 }
 
+void function_overload_ref(jsonxx::object_listener& out) {
+    out.start_object();
+    out.pair("hello", "ref");
+    out.end_object();
+}
+
+void function_overload_ptr(jsonxx::object_listener& out) {
+    out.start_object();
+    out.pair("hello", "ptr");
+    out.end_object();
+}
+
+bool function_overload() {
+    bool ok = true;
+
+    std::stringstream ss;
+    jsonxx::indenting_writer cw(ss);
+    cw.start_object();
+    cw.pair("ref", function_overload_ref);
+    cw.pair("ptr", function_overload_ptr);
+    cw.end_object();
+
+    return ok;
+}
+
 }
 
 bool indenting_writer_tests() {
@@ -156,6 +181,7 @@ bool indenting_writer_tests() {
     ok &= E(several);
     ok &= E(list);
     ok &= E(complex_nesting_all_types);
+    ok &= E(function_overload);
 
     return ok;
 }

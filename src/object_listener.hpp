@@ -41,6 +41,9 @@ public:
     void value_null() { value(null); }
 
     // Convenience:
+    void value(void(*f)(object_listener&)) { f(*this); }
+    void value(void(*f)(object_listener*)) { f(this); }
+
     template <typename T>
     void pair(const std::string& k, T v) {
         key(k);
