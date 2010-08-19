@@ -39,6 +39,13 @@ public:
     // If you don't want to use the overloaded interface:
     void value_bool(bool b) { value(bool_type(b)); }
     void value_null() { value(null); }
+
+    // Convenience:
+    template <typename T>
+    void pair(const std::string& k, T v) {
+        key(k);
+        value(v);
+    }
 };
 
 } // namespace jsonxx
