@@ -1,13 +1,8 @@
 #include <cassert>
 #include "compact_writer.hpp"
+#include "util.hpp"
 
 namespace jsonxx {
-
-void write_quoted_string(std::ostream& out, const std::string& str) {
-    // TODO: Escaping
-    out << '"' << str << '"';
-}
-
 
 compact_writer::compact_writer(std::ostream& out_) :
     out(out_),

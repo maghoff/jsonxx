@@ -1,14 +1,13 @@
-#ifndef JSONXX_COMPACT_WRITER_HPP
-#define JSONXX_COMPACT_WRITER_HPP
+#ifndef JSONXX_INDENTING_WRITER_HPP
+#define JSONXX_INDENTING_WRITER_HPP
 
-#include <ostream>
 #include "object_listener.hpp"
 
 #include "declspec.hpp"
 
 namespace jsonxx {
 
-class JSONXX_DECLSPEC compact_writer : public object_listener {
+class JSONXX_DECLSPEC indenting_writer : public object_listener {
     std::ostream& out;
 
     enum state_t {
@@ -18,6 +17,9 @@ class JSONXX_DECLSPEC compact_writer : public object_listener {
     };
     state_t state;
 
+    int indentation_level;
+
+    void newline();
     void comma_unless(state_t);
     void maybe_key_comma();
     void maybe_array_comma();
@@ -27,8 +29,8 @@ public:
     // The boolalpha-flag is *set* on the given ostream. This flag should be
     // set throughout the JSON generation, to ensure proper formatting
     // of boolean values.
-    compact_writer(std::ostream&);
-    ~compact_writer();
+    indenting_writer(std::ostream&);
+    ~indenting_writer();
 
     void key(const std::string&);
 
@@ -49,5 +51,4 @@ public:
 
 #undef JSONXX_DECLSPEC
 
-#endif // JSONXX_COMPACT_WRITER_HPP
-
+#endif // INDENTING_WRITER_HPP

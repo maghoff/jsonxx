@@ -1,6 +1,7 @@
 def build(bld):
     sources = [
         'compact_writer.cpp',
+        'indenting_writer.cpp',
         'test.cpp',
         'test_util.cpp',
         'validating_filter.cpp',

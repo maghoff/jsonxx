@@ -3,10 +3,12 @@
 
 def build(bld):
     sources = [
+        'compact_writer.cpp',
+        'indenting_writer.cpp',
+        'null_object_listener.cpp',
         'object_filter.cpp',
         'object_listener.cpp',
-        'compact_writer.cpp',
-        'null_object_listener.cpp',
+        'util.cpp',
         'validating_filter.cpp',
     ]
 
