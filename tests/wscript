@@ -1,11 +1,14 @@
 def build(bld):
     sources = [
-        'test.cpp'
+        'compact_writer.cpp',
+        'test.cpp',
+        'test_util.cpp',
+        'validating_filter.cpp',
     ]
 
     obj = bld.new_task_gen(
         features = 'cxx cprogram',
-        source = 'test.cpp',
+        source = sources,
         includes = '../src',
         uselib_local = 'jsonxx',
         unit_test = 1,
