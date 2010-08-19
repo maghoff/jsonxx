@@ -6,7 +6,7 @@ namespace jsonxx {
 
 indenting_writer::indenting_writer(std::ostream& out_) :
     out(out_),
-    state(skip_array_comma),
+    state(in_key_value_pair),
     indentation_level(0)
 {
     out << std::boolalpha;
@@ -29,31 +29,36 @@ void indenting_writer::newline() {
     out.write(buf, ind % bs);
 }
 
-void indenting_writer::comma_unless(state_t s) {
-    if (state == s) state = other;
-    else out << ',';
-}
-
-void indenting_writer::maybe_key_comma() {
-    comma_unless(skip_key_comma);
+void indenting_writer::prepare_for_key() {
+    if (state == other) out << ',';
+    state = other;
     newline();
 }
 
-void indenting_writer::maybe_array_comma() {
-    comma_unless(skip_array_comma);
+void indenting_writer::prepare_for_value() {
+    if (state == in_key_value_pair) {
+        // do nothing
+    } else if (state == start_of_array) {
+        newline();
+    } else if (state == other) {
+        out << ',';
+        newline();
+    }
+
+    state = other;
 }
 
 void indenting_writer::key(const std::string& name) {
-    maybe_key_comma();
+    prepare_for_key();
     write_quoted_string(out, name);
     out << ": ";
-    state = skip_array_comma;
+    state = in_key_value_pair;
 }
 
 void indenting_writer::start_object() {
-    maybe_array_comma();
+    prepare_for_value();
     out << '{';
-    state = skip_key_comma;
+    state = start_of_object;
     indentation_level++;
 }
 
@@ -64,9 +69,9 @@ void indenting_writer::end_object() {
 }
 
 void indenting_writer::start_array() {
-    maybe_array_comma();
+    prepare_for_value();
     out << '[';
-    state = skip_array_comma;
+    state = start_of_array;
     indentation_level++;
 }
 
@@ -77,27 +82,27 @@ void indenting_writer::end_array() {
 }
 
 void indenting_writer::value(const std::string& v) {
-    maybe_array_comma();
+    prepare_for_value();
     write_quoted_string(out, v);
 }
 
 void indenting_writer::value(int v) {
-    maybe_array_comma();
+    prepare_for_value();
     out << v;
 }
 
 void indenting_writer::value(double v) {
-    maybe_array_comma();
+    prepare_for_value();
     out << v;
 }
 
 void indenting_writer::value(bool_type v) {
-    maybe_array_comma();
+    prepare_for_value();
     out << v.value;
 }
 
 void indenting_writer::value(null_type) {
-    maybe_array_comma();
+    prepare_for_value();
     out << "null";
 }
 

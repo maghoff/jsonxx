@@ -11,8 +11,9 @@ class JSONXX_DECLSPEC indenting_writer : public object_listener {
     std::ostream& out;
 
     enum state_t {
-        skip_key_comma,
-        skip_array_comma,
+        start_of_object,
+        in_key_value_pair,
+        start_of_array,
         other
     };
     state_t state;
@@ -20,9 +21,8 @@ class JSONXX_DECLSPEC indenting_writer : public object_listener {
     int indentation_level;
 
     void newline();
-    void comma_unless(state_t);
-    void maybe_key_comma();
-    void maybe_array_comma();
+    void prepare_for_key();
+    void prepare_for_value();
 
 public:
     // This constructor has the following *side effect*:
