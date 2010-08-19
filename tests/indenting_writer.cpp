@@ -25,11 +25,33 @@ bool simple() {
     jsonxx::indenting_writer cw(ss);
 
     cw.start_object();
-    cw.key("i");
-    cw.value(7);
+    cw.pair("i", 7);
     cw.end_object();
 
-    CHECK_EQUAL(ss.str(), "{\n    \"i\":7\n}");
+    CHECK_EQUAL(ss.str(), "{\n    \"i\": 7\n}");
+
+    return ok;
+}
+
+bool several() {
+    bool ok = true;
+
+    std::stringstream ss;
+    jsonxx::indenting_writer cw(ss);
+
+    cw.start_object();
+    cw.pair("i", 7);
+    cw.pair("j", 2.72);
+    cw.pair("k", "v");
+    cw.end_object();
+
+    CHECK_EQUAL(ss.str(),
+        "{\n"
+        "    \"i\": 7,\n"
+        "    \"j\": 2.72,\n"
+        "    \"k\": \"v\"\n"
+        "}"
+    );
 
     return ok;
 }
@@ -42,7 +64,8 @@ bool indenting_writer_tests() {
     #define E(f) execute(f, "indenting_writer::" #f)
 
     ok &= E(trivial);
-//    ok &= E(simple);
+    ok &= E(simple);
+    ok &= E(several);
 
     return ok;
 }

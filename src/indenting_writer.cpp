@@ -20,14 +20,13 @@ void indenting_writer::newline() {
     assert(indentation_level >= 0);
 
     static const char buf[] = "                ";
-    const size_t bs = sizeof(buf) / sizeof(buf[0]);
+    const size_t bs = sizeof(buf) / sizeof(buf[0]) - 1; // Exclude \0-terminator
 
     size_t ind = 4 * static_cast<size_t>(indentation_level);
 
+    out << '\n';
     for (size_t i=0; i<ind/bs; ++i) out.write(buf, bs);
     out.write(buf, ind % bs);
-
-    out << '\n';
 }
 
 void indenting_writer::comma_unless(state_t s) {
@@ -37,6 +36,7 @@ void indenting_writer::comma_unless(state_t s) {
 
 void indenting_writer::maybe_key_comma() {
     comma_unless(skip_key_comma);
+    newline();
 }
 
 void indenting_writer::maybe_array_comma() {
@@ -46,7 +46,7 @@ void indenting_writer::maybe_array_comma() {
 void indenting_writer::key(const std::string& name) {
     maybe_key_comma();
     write_quoted_string(out, name);
-    out << ':';
+    out << ": ";
     state = skip_array_comma;
 }
 
