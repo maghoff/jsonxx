@@ -7,6 +7,7 @@ blddir='build'
 srcdir="."
 
 def set_options(opt):
+    opt.tool_options('compiler_cc')
     opt.tool_options('compiler_cxx')
 
 
@@ -92,6 +93,7 @@ def configure(conf):
     conf.env['MSVC_VERSIONS'] = ['msvc 9.0']
     conf.env['MSVC_TARGETS'] = ['x86']
 
+    conf.check_tool('compiler_cc')
     conf.check_tool('compiler_cxx')
 
     compiler_configurators = {
