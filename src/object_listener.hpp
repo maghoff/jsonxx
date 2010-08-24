@@ -19,7 +19,12 @@ class null_type { };
 extern JSONXX_DECLSPEC null_type null;
 
 class JSONXX_DECLSPEC object_listener {
+    // This class is not copyable
+    object_listener(const object_listener&);
+    object_listener& operator = (const object_listener&);
+
 public:
+    object_listener() { }
     virtual ~object_listener();
 
     virtual void key(const std::string&) = 0;

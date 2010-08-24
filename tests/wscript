@@ -2,6 +2,7 @@ def build(bld):
     sources = [
         'compact_writer.cpp',
         'indenting_writer.cpp',
+        'parser.cpp',
         'raii.cpp',
         'test.cpp',
         'test_util.cpp',

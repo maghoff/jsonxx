@@ -8,6 +8,7 @@ def build(bld):
         'null_object_listener.cpp',
         'object_filter.cpp',
         'object_listener.cpp',
+        'parser.cpp',
         'util.cpp',
         'validating_filter.cpp',
         'writer_base.cpp',
