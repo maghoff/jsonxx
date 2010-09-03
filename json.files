@@ -28,3 +28,5 @@ tests/raii.cpp
 src/parser.hpp
 src/parser.cpp
 tests/parser.cpp
+import/libjson/json.c
+import/libjson/json.h
