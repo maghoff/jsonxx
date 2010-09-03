@@ -30,3 +30,5 @@ src/parser.cpp
 tests/parser.cpp
 import/libjson/json.c
 import/libjson/json.h
+wscript
+tests/util.cpp

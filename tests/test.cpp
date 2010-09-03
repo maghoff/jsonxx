@@ -5,6 +5,7 @@ extern bool indenting_writer_tests();
 extern bool parser_tests();
 extern bool raii_tests();
 extern bool validating_filter_tests();
+extern bool util_tests();
 
 int main() {
     bool ok = true;
@@ -14,6 +15,7 @@ int main() {
     ok &= parser_tests();
     ok &= raii_tests();
     ok &= validating_filter_tests();
+    ok &= util_tests();
 
     return ok ? 0 : 1;
 }
