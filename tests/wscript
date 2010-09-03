@@ -5,6 +5,7 @@ def build(bld):
         'raii.cpp',
         'test.cpp',
         'test_util.cpp',
+        'util.cpp',
         'validating_filter.cpp',
     ]
 
