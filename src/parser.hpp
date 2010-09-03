@@ -27,6 +27,8 @@ public:
 
     void parse(const char* begin, const char* end);
     void parse(const std::string&);
+
+    bool is_done() const;
 };
 
 } // namespace jsonxx

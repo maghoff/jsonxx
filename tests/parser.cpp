@@ -118,18 +118,23 @@ bool incremental() {
 
     p.parse("{");
     CHECK_EQUAL(ss.str(), "{");
+    CHECK_EQUAL(p.is_done(), false);
 
     p.parse("\"t\":");
     CHECK_EQUAL(ss.str(), "{\"t\":");
+    CHECK_EQUAL(p.is_done(), false);
 
     p.parse("true,");
     CHECK_EQUAL(ss.str(), "{\"t\":true");
+    CHECK_EQUAL(p.is_done(), false);
 
     p.parse("\"f\":fals");
     CHECK_EQUAL(ss.str(), "{\"t\":true,\"f\":");
+    CHECK_EQUAL(p.is_done(), false);
 
     p.parse("e}");
     CHECK_EQUAL(ss.str(), "{\"t\":true,\"f\":false}");
+    CHECK_EQUAL(p.is_done(), true);
 
     return ok;
 }

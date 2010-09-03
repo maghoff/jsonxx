@@ -74,4 +74,8 @@ void parser::parse(const std::string& str) {
     parse(str.data(), str.data() + str.length());
 }
 
+bool parser::is_done() const {
+    return json_parser_is_done(p.get());
+}
+
 } // namespace jsonxx
