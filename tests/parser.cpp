@@ -64,6 +64,50 @@ bool booleans() {
     return ok;
 }
 
+bool simple_string() {
+    bool ok = true;
+
+    std::string res = roundtrip("{ \"s\": \"Simple text string\" }");
+    CHECK_EQUAL(res, "{\"s\":\"Simple text string\"}");
+
+    return ok;
+}
+
+bool string_with_escapes() {
+    bool ok = true;
+
+    std::string s =
+        "{\"s\":"
+        "\"Multiline\\n\\ttext\\r\\nwith bells\\b and whistles\\f\\n"
+        "Quotes: \\\"\\n"
+        "Backslash: \\\\\\n"
+        "\"}"
+    ;
+
+    std::string res = roundtrip(s);
+    CHECK_EQUAL(res, s);
+
+    return ok;
+}
+
+bool utf8_string() {
+    bool ok = true;
+
+    std::string res = roundtrip("{ \"s\": \"Please pay in \xE2\x82\xAC\" }");
+    CHECK_EQUAL(res, "{\"s\":\"Please pay in \xE2\x82\xAC\"}");
+
+    return ok;
+}
+
+bool string_with_unicode_escapes() {
+    bool ok = true;
+
+    std::string res = roundtrip("{ \"s\": \"Please pay in \\u20AC\" }");
+    CHECK_EQUAL(res, "{\"s\":\"Please pay in \xE2\x82\xAC\"}");
+
+    return ok;
+}
+
 bool incremental() {
     bool ok = true;
 
@@ -100,9 +144,11 @@ bool parser_tests() {
     ok &= EXEC(key_float);
     ok &= EXEC(key_null);
     ok &= EXEC(booleans);
+    ok &= EXEC(simple_string);
+    ok &= EXEC(string_with_escapes);
+    ok &= EXEC(utf8_string);
+    ok &= EXEC(string_with_unicode_escapes);
     ok &= EXEC(incremental);
 
     return ok;
 }
-
-
