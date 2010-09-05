@@ -10,7 +10,7 @@ namespace {
 
 bool needs_escaping(char c) {
     return
-        (0 <= c) && (c < 0x20) ||
+        ((0 <= c) && (c < 0x20)) ||
         (c == '\\') ||
         (c == '\"')
     ;
