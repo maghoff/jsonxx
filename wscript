@@ -101,6 +101,10 @@ class msvc_configurator:
 
 
 def configure(conf):
+    # libjson is a necessary dependency:
+    import subprocess, sys
+    subprocess.check_call([sys.executable, 'get_libjson.py'], cwd='import')
+
     conf.env['MSVC_VERSIONS'] = ['msvc 9.0']
     conf.env['MSVC_TARGETS'] = ['x86']
 
