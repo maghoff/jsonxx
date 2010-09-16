@@ -7,6 +7,16 @@
 
 namespace jsonxx {
 
+namespace field_type {
+    enum field_type {
+        t_ignore,
+        t_string,
+        t_int,
+        t_double,
+        t_bool
+    };
+}
+
 template <class T>
 class deserializer_base : public object_listener {
 protected:
@@ -20,23 +30,15 @@ protected:
         bool T::* t_bool;
     };
 
-    enum field_type {
-        t_ignore,
-        t_string,
-        t_int,
-        t_double,
-        t_bool
-    };
-
     struct field_info {
         field_pointer field;
-        field_type type;
+        field_type::field_type type;
 
         field_info() { }
-        field_info(std::string T::* p) : type(t_string) { field.t_string = p; }
-        field_info(int T::* p) : type(t_int) { field.t_int = p; }
-        field_info(double T::* p) : type(t_double) { field.t_double = p; }
-        field_info(bool T::* p) : type(t_bool) { field.t_bool = p; }
+        field_info(std::string T::* p) : type(field_type::t_string) { field.t_string = p; }
+        field_info(int T::* p) : type(field_type::t_int) { field.t_int = p; }
+        field_info(double T::* p) : type(field_type::t_double) { field.t_double = p; }
+        field_info(bool T::* p) : type(field_type::t_bool) { field.t_bool = p; }
     };
 
     field_info expected_field;
@@ -80,7 +82,7 @@ template <class T>
 void deserializer_base<T>::key(const std::string& k) {
     typename expect_map_t::const_iterator i = expect_from_key.find(k);
     if (i != expect_from_key.end()) expected_field = i->second;
-    else expected_field.type = t_ignore;
+    else expected_field.type = field_type::t_ignore;
 }
 
 template <class T>
@@ -95,22 +97,22 @@ void deserializer_base<T>::end_array() { }
 
 template <class T>
 void deserializer_base<T>::value(const std::string& v) {
-    if (expected_field.type == t_string) t.*expected_field.field.t_string = v;
+    if (expected_field.type == field_type::t_string) t.*expected_field.field.t_string = v;
 }
 
 template <class T>
 void deserializer_base<T>::value(int v) {
-    if (expected_field.type == t_int) t.*expected_field.field.t_int = v;
+    if (expected_field.type == field_type::t_int) t.*expected_field.field.t_int = v;
 }
 
 template <class T>
 void deserializer_base<T>::value(double v) {
-    if (expected_field.type == t_double) t.*expected_field.field.t_double = v;
+    if (expected_field.type == field_type::t_double) t.*expected_field.field.t_double = v;
 }
 
 template <class T>
 void deserializer_base<T>::value(bool_type v) {
-    if (expected_field.type == t_bool) t.*expected_field.field.t_bool = v.value;
+    if (expected_field.type == field_type::t_bool) t.*expected_field.field.t_bool = v.value;
 }
 
 template <class T>
