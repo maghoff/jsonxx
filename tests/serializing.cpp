@@ -102,22 +102,22 @@ void deserializer_base<T>::end_array() { }
 
 template <class T>
 void deserializer_base<T>::value(const std::string& v) {
-    if (expected_field.type == t_string) &t->*expected_field.field.t_string = v;
+    if (expected_field.type == t_string) t.*expected_field.field.t_string = v;
 }
 
 template <class T>
 void deserializer_base<T>::value(int v) {
-    if (expected_field.type == t_int) &t->*expected_field.field.t_int = v;
+    if (expected_field.type == t_int) t.*expected_field.field.t_int = v;
 }
 
 template <class T>
 void deserializer_base<T>::value(double v) {
-    if (expected_field.type == t_double) &t->*expected_field.field.t_double = v;
+    if (expected_field.type == t_double) t.*expected_field.field.t_double = v;
 }
 
 template <class T>
 void deserializer_base<T>::value(jsonxx::bool_type v) {
-    if (expected_field.type == t_bool) &t->*expected_field.field.t_bool = v.value;
+    if (expected_field.type == t_bool) t.*expected_field.field.t_bool = v.value;
 }
 
 template <class T>
