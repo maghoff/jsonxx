@@ -70,8 +70,6 @@ public:
 simple_struct_object_listener::simple_struct_object_listener(simple_struct& s_) :
     s(s_)
 {
-    expect_from_key["value"] = field_info(&simple_struct::value);
-
     #define REGISTER(f) \
         expect_from_key[#f] = field_info(&simple_struct::f);
 
