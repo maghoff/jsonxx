@@ -39,9 +39,8 @@ class simple_struct_object_listener : public jsonxx::object_listener {
 
     field_info expected_field;
 
-    std::map<std::string, field_info> expect_from_key;
-
-    void match(field_type e);
+    typedef std::map<std::string, field_info> expect_map_t;
+    expect_map_t expect_from_key;
 
 public:
     simple_struct_object_listener(simple_struct&);
@@ -79,7 +78,9 @@ simple_struct_object_listener::~simple_struct_object_listener() {
 }
 
 void simple_struct_object_listener::key(const std::string& k) {
-    expected_field = expect_from_key[k];
+    expect_map_t::const_iterator i = expect_from_key.find(k);
+    if (i != expect_from_key.end()) expected_field = i->second;
+    else expected_field.type = t_ignore;
 }
 
 void simple_struct_object_listener::start_object() { }
@@ -88,30 +89,20 @@ void simple_struct_object_listener::end_object() { }
 void simple_struct_object_listener::start_array() { }
 void simple_struct_object_listener::end_array() { }
 
-void simple_struct_object_listener::match(field_type e) {
-    if (expected_field.type != e) {
-        throw std::runtime_error("Actual type did not match expected type when deserializing");
-    }
-}
-
 void simple_struct_object_listener::value(const std::string& v) {
-    match(t_string);
-    &s->*expected_field.field.t_string = v;
+    if (expected_field.type == t_string) &s->*expected_field.field.t_string = v;
 }
 
 void simple_struct_object_listener::value(int v) {
-    match(t_int);
-    &s->*expected_field.field.t_int = v;
+    if (expected_field.type == t_int) &s->*expected_field.field.t_int = v;
 }
 
 void simple_struct_object_listener::value(double v) {
-    match(t_double);
-    &s->*expected_field.field.t_double = v;
+    if (expected_field.type == t_double) &s->*expected_field.field.t_double = v;
 }
 
 void simple_struct_object_listener::value(jsonxx::bool_type v) {
-    match(t_bool);
-    &s->*expected_field.field.t_bool = v.value;
+    if (expected_field.type == t_bool) &s->*expected_field.field.t_bool = v.value;
 }
 
 void simple_struct_object_listener::value(jsonxx::null_type) {
