@@ -4,6 +4,7 @@
 def build(bld):
     sources = [
         'compact_writer.cpp',
+        'deserializer_base.cpp',
         'indenting_writer.cpp',
         'null_object_listener.cpp',
         'object_filter.cpp',

@@ -33,3 +33,5 @@ import/libjson/json.h
 wscript
 tests/util.cpp
 tests/serializing.cpp
+src/deserializer_base.hpp
+src/deserializer_base.cpp
