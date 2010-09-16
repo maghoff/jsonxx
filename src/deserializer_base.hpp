@@ -37,6 +37,9 @@ struct field_info {
     field_info(bool T::* p) : type(field_type::t_bool) { field.t_bool = p; }
 };
 
+template <class T, class K>
+field_info<T> make_field_info(K T::* p) { return field_info<T>(p); }
+
 template <class T>
 class deserializer_base : public object_listener {
 protected:
@@ -68,7 +71,7 @@ public:
 };
 
 #define REGISTER_FIELD(f) \
-    expect_from_key[#f] = field_info(&target_struct_type::f);
+    expect_from_key[#f] = jsonxx::make_field_info<target_struct_type>(&target_struct_type::f);
 
 template <class T>
 deserializer_base<T>::deserializer_base(T& t_) :
