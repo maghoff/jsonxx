@@ -18,32 +18,34 @@ namespace field_type {
 }
 
 template <class T>
+union field_pointer {
+    std::string T::* t_string;
+    int T::* t_int;
+    double T::* t_double;
+    bool T::* t_bool;
+};
+
+template <class T>
+struct field_info {
+    field_pointer<T> field;
+    field_type::field_type type;
+
+    field_info() { }
+    field_info(std::string T::* p) : type(field_type::t_string) { field.t_string = p; }
+    field_info(int T::* p) : type(field_type::t_int) { field.t_int = p; }
+    field_info(double T::* p) : type(field_type::t_double) { field.t_double = p; }
+    field_info(bool T::* p) : type(field_type::t_bool) { field.t_bool = p; }
+};
+
+template <class T>
 class deserializer_base : public object_listener {
 protected:
     typedef T target_struct_type;
     T& t;
 
-    union field_pointer {
-        std::string T::* t_string;
-        int T::* t_int;
-        double T::* t_double;
-        bool T::* t_bool;
-    };
+    field_info<T> expected_field;
 
-    struct field_info {
-        field_pointer field;
-        field_type::field_type type;
-
-        field_info() { }
-        field_info(std::string T::* p) : type(field_type::t_string) { field.t_string = p; }
-        field_info(int T::* p) : type(field_type::t_int) { field.t_int = p; }
-        field_info(double T::* p) : type(field_type::t_double) { field.t_double = p; }
-        field_info(bool T::* p) : type(field_type::t_bool) { field.t_bool = p; }
-    };
-
-    field_info expected_field;
-
-    typedef std::map<std::string, field_info> expect_map_t;
+    typedef std::map<std::string, field_info<T> > expect_map_t;
     expect_map_t expect_from_key;
 
 public:
