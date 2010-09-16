@@ -41,6 +41,12 @@ template <class T, class K>
 field_info<T> make_field_info(K T::* p) { return field_info<T>(p); }
 
 template <class T>
+struct type_information {
+    typedef std::map<std::string, field_info<T> > info_map_t;
+    static info_map_t info_map;
+};
+
+template <class T>
 class deserializer_base : public object_listener {
 protected:
     typedef T target_struct_type;
@@ -48,8 +54,8 @@ protected:
 
     field_info<T> expected_field;
 
-    typedef std::map<std::string, field_info<T> > expect_map_t;
-    expect_map_t expect_from_key;
+    typedef typename type_information<T>::info_map_t expect_map_t;
+    static expect_map_t& expect_from_key;
 
 public:
     deserializer_base(T&);
@@ -70,8 +76,9 @@ public:
     void value(null_type);
 };
 
-#define REGISTER_FIELD(f) \
-    expect_from_key[#f] = jsonxx::make_field_info<target_struct_type>(&target_struct_type::f);
+template <class T>
+typename deserializer_base<T>::expect_map_t& deserializer_base<T>::expect_from_key =
+    type_information<T>::info_map;
 
 template <class T>
 deserializer_base<T>::deserializer_base(T& t_) :

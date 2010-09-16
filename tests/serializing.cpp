@@ -15,21 +15,24 @@ struct simple_struct {
     int value;
 };
 
-class simple_struct_deserializer : public jsonxx::deserializer_base<simple_struct> {
-public:
-    simple_struct_deserializer(simple_struct&);
-    ~simple_struct_deserializer();
-};
-
-simple_struct_deserializer::simple_struct_deserializer(simple_struct& s) :
-    jsonxx::deserializer_base<simple_struct>(s)
-{
-    REGISTER_FIELD(name);
-    REGISTER_FIELD(value);
+jsonxx::type_information<simple_struct>::info_map_t create_info_map_for_simple_struct() {
+    jsonxx::type_information<simple_struct>::info_map_t m;
+    #define R(x) m[#x] = jsonxx::make_field_info(&simple_struct::x)
+    R(name);
+    R(value);
+    #undef R
+    return m;
 }
 
-simple_struct_deserializer::~simple_struct_deserializer() {
 }
+
+template <>
+jsonxx::type_information<simple_struct>::info_map_t
+    jsonxx::type_information<simple_struct>::info_map = create_info_map_for_simple_struct();
+
+namespace {
+
+typedef jsonxx::deserializer_base<simple_struct> simple_struct_deserializer;
 
 bool serialize_simple_struct() {
     bool ok = true;
