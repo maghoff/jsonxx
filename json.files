@@ -32,3 +32,4 @@ import/libjson/json.c
 import/libjson/json.h
 wscript
 tests/util.cpp
+tests/serializing.cpp
