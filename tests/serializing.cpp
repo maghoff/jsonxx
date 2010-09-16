@@ -14,14 +14,17 @@ struct simple_struct {
     int value;
 };
 
-class simple_struct_object_listener : public jsonxx::object_listener {
-    simple_struct& s;
+template <class T>
+class deserializer_base : public jsonxx::object_listener {
+protected:
+    typedef T target_struct_type;
+    T& t;
 
     union field_pointer {
-        std::string simple_struct::* t_string;
-        int simple_struct::* t_int;
-        double simple_struct::* t_double;
-        bool simple_struct::* t_bool;
+        std::string T::* t_string;
+        int T::* t_int;
+        double T::* t_double;
+        bool T::* t_bool;
     };
 
     enum field_type {
@@ -37,10 +40,10 @@ class simple_struct_object_listener : public jsonxx::object_listener {
         field_type type;
 
         field_info() { }
-        field_info(std::string simple_struct::* p) : type(t_string) { field.t_string = p; }
-        field_info(int simple_struct::* p) : type(t_int) { field.t_int = p; }
-        field_info(double simple_struct::* p) : type(t_double) { field.t_double = p; }
-        field_info(bool simple_struct::* p) : type(t_bool) { field.t_bool = p; }
+        field_info(std::string T::* p) : type(t_string) { field.t_string = p; }
+        field_info(int T::* p) : type(t_int) { field.t_int = p; }
+        field_info(double T::* p) : type(t_double) { field.t_double = p; }
+        field_info(bool T::* p) : type(t_bool) { field.t_bool = p; }
     };
 
     field_info expected_field;
@@ -49,8 +52,8 @@ class simple_struct_object_listener : public jsonxx::object_listener {
     expect_map_t expect_from_key;
 
 public:
-    simple_struct_object_listener(simple_struct&);
-    ~simple_struct_object_listener();
+    deserializer_base(T&);
+    ~deserializer_base();
 
     void key(const std::string&);
 
@@ -67,51 +70,75 @@ public:
     void value(jsonxx::null_type);
 };
 
-simple_struct_object_listener::simple_struct_object_listener(simple_struct& s_) :
-    s(s_)
+#define REGISTER_FIELD(f) \
+    expect_from_key[#f] = field_info(&target_struct_type::f);
+
+template <class T>
+deserializer_base<T>::deserializer_base(T& t_) :
+    t(t_)
 {
-    #define REGISTER(f) \
-        expect_from_key[#f] = field_info(&simple_struct::f);
-
-    REGISTER(name);
-    REGISTER(value);
-
-    #undef REGISTER
 }
 
-simple_struct_object_listener::~simple_struct_object_listener() {
+template <class T>
+deserializer_base<T>::~deserializer_base() {
 }
 
-void simple_struct_object_listener::key(const std::string& k) {
-    expect_map_t::const_iterator i = expect_from_key.find(k);
+template <class T>
+void deserializer_base<T>::key(const std::string& k) {
+    typename expect_map_t::const_iterator i = expect_from_key.find(k);
     if (i != expect_from_key.end()) expected_field = i->second;
     else expected_field.type = t_ignore;
 }
 
-void simple_struct_object_listener::start_object() { }
-void simple_struct_object_listener::end_object() { }
+template <class T>
+void deserializer_base<T>::start_object() { }
+template <class T>
+void deserializer_base<T>::end_object() { }
 
-void simple_struct_object_listener::start_array() { }
-void simple_struct_object_listener::end_array() { }
+template <class T>
+void deserializer_base<T>::start_array() { }
+template <class T>
+void deserializer_base<T>::end_array() { }
 
-void simple_struct_object_listener::value(const std::string& v) {
-    if (expected_field.type == t_string) &s->*expected_field.field.t_string = v;
+template <class T>
+void deserializer_base<T>::value(const std::string& v) {
+    if (expected_field.type == t_string) &t->*expected_field.field.t_string = v;
 }
 
-void simple_struct_object_listener::value(int v) {
-    if (expected_field.type == t_int) &s->*expected_field.field.t_int = v;
+template <class T>
+void deserializer_base<T>::value(int v) {
+    if (expected_field.type == t_int) &t->*expected_field.field.t_int = v;
 }
 
-void simple_struct_object_listener::value(double v) {
-    if (expected_field.type == t_double) &s->*expected_field.field.t_double = v;
+template <class T>
+void deserializer_base<T>::value(double v) {
+    if (expected_field.type == t_double) &t->*expected_field.field.t_double = v;
 }
 
-void simple_struct_object_listener::value(jsonxx::bool_type v) {
-    if (expected_field.type == t_bool) &s->*expected_field.field.t_bool = v.value;
+template <class T>
+void deserializer_base<T>::value(jsonxx::bool_type v) {
+    if (expected_field.type == t_bool) &t->*expected_field.field.t_bool = v.value;
 }
 
-void simple_struct_object_listener::value(jsonxx::null_type) {
+template <class T>
+void deserializer_base<T>::value(jsonxx::null_type) {
     assert(false);
+}
+
+class simple_struct_deserializer : public deserializer_base<simple_struct> {
+public:
+    simple_struct_deserializer(simple_struct&);
+    ~simple_struct_deserializer();
+};
+
+simple_struct_deserializer::simple_struct_deserializer(simple_struct& s) :
+    deserializer_base<simple_struct>(s)
+{
+    REGISTER_FIELD(name);
+    REGISTER_FIELD(value);
+}
+
+simple_struct_deserializer::~simple_struct_deserializer() {
 }
 
 bool serialize_simple_struct() {
@@ -138,7 +165,7 @@ bool deserialize_simple_struct() {
     simple_struct s = { "", 0 };
 
     std::stringstream ss("{\"name\":\"the name\",\"value\":42}");
-    simple_struct_object_listener ds(s);
+    simple_struct_deserializer ds(s);
     jsonxx::parser p(&ds);
     p.parse(ss);
 
