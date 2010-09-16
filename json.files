@@ -35,3 +35,5 @@ tests/util.cpp
 tests/serializing.cpp
 src/deserializer.hpp
 src/deserializer.cpp
+src/serializer.hpp
+src/serializer.cpp
