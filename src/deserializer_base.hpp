@@ -1,5 +1,5 @@
-#ifndef DESERIALIZER_BASE_HPP
-#define DESERIALIZER_BASE_HPP
+#ifndef JSONXX_DESERIALIZER_BASE_HPP
+#define JSONXX_DESERIALIZER_BASE_HPP
 
 #include <cassert>
 #include <map>
@@ -120,4 +120,4 @@ void deserializer_base<T>::value(null_type) {
 
 } // namespace jsonxx
 
-#endif // DESERIALIZER_BASE_HPP
+#endif // JSONXX_DESERIALIZER_BASE_HPP
