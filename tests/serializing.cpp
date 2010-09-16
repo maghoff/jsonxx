@@ -35,6 +35,12 @@ class simple_struct_object_listener : public jsonxx::object_listener {
     struct field_info {
         field_pointer field;
         field_type type;
+
+        field_info() { }
+        field_info(std::string simple_struct::* p) : type(t_string) { field.t_string = p; }
+        field_info(int simple_struct::* p) : type(t_int) { field.t_int = p; }
+        field_info(double simple_struct::* p) : type(t_double) { field.t_double = p; }
+        field_info(bool simple_struct::* p) : type(t_bool) { field.t_bool = p; }
     };
 
     field_info expected_field;
@@ -64,12 +70,13 @@ public:
 simple_struct_object_listener::simple_struct_object_listener(simple_struct& s_) :
     s(s_)
 {
-    #define REGISTER(f, t) \
-        expect_from_key[#f].field.t = &simple_struct::f; \
-        expect_from_key[#f].type = t;
+    expect_from_key["value"] = field_info(&simple_struct::value);
 
-    REGISTER(name, t_string);
-    REGISTER(value, t_int);
+    #define REGISTER(f) \
+        expect_from_key[#f] = field_info(&simple_struct::f);
+
+    REGISTER(name);
+    REGISTER(value);
 
     #undef REGISTER
 }
