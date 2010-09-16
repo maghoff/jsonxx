@@ -32,8 +32,6 @@ jsonxx::type_information<simple_struct>::info_map_t
 
 namespace {
 
-typedef jsonxx::deserializer<simple_struct> simple_struct_deserializer;
-
 template <class T>
 void simple_serializer(jsonxx::object_listener& o, const T& t) {
     typename jsonxx::type_information<T>::info_map_t &info_map = jsonxx::type_information<T>::info_map;
@@ -76,7 +74,7 @@ bool deserialize_simple_struct() {
     simple_struct s = { "", 0 };
 
     std::stringstream ss("{\"name\":\"the name\",\"value\":42}");
-    simple_struct_deserializer ds(s);
+    jsonxx::deserializer<simple_struct> ds(s);
     jsonxx::parser p(&ds);
     p.parse(ss);
 
