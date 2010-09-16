@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include "test_util.hpp"
 #include "compact_writer.hpp"
-#include "deserializer_base.hpp"
+#include "deserializer.hpp"
 #include "parser.hpp"
 
 namespace {
@@ -32,7 +32,7 @@ jsonxx::type_information<simple_struct>::info_map_t
 
 namespace {
 
-typedef jsonxx::deserializer_base<simple_struct> simple_struct_deserializer;
+typedef jsonxx::deserializer<simple_struct> simple_struct_deserializer;
 
 bool serialize_simple_struct() {
     bool ok = true;

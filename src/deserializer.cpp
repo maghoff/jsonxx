@@ -1,4 +1,4 @@
-#include "deserializer_base.hpp"
+#include "deserializer.hpp"
 
 namespace jsonxx {
 

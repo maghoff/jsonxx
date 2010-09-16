@@ -1,5 +1,5 @@
-#ifndef JSONXX_DESERIALIZER_BASE_HPP
-#define JSONXX_DESERIALIZER_BASE_HPP
+#ifndef JSONXX_DESERIALIZER_HPP
+#define JSONXX_DESERIALIZER_HPP
 
 #include <cassert>
 #include <map>
@@ -47,7 +47,7 @@ struct type_information {
 };
 
 template <class T>
-class deserializer_base : public object_listener {
+class deserializer : public object_listener {
 protected:
     typedef T target_struct_type;
     T& t;
@@ -58,8 +58,8 @@ protected:
     static expect_map_t& expect_from_key;
 
 public:
-    deserializer_base(T&);
-    ~deserializer_base();
+    deserializer(T&);
+    ~deserializer();
 
     void key(const std::string&);
 
@@ -77,61 +77,61 @@ public:
 };
 
 template <class T>
-typename deserializer_base<T>::expect_map_t& deserializer_base<T>::expect_from_key =
+typename deserializer<T>::expect_map_t& deserializer<T>::expect_from_key =
     type_information<T>::info_map;
 
 template <class T>
-deserializer_base<T>::deserializer_base(T& t_) :
+deserializer<T>::deserializer(T& t_) :
     t(t_)
 {
 }
 
 template <class T>
-deserializer_base<T>::~deserializer_base() {
+deserializer<T>::~deserializer() {
 }
 
 template <class T>
-void deserializer_base<T>::key(const std::string& k) {
+void deserializer<T>::key(const std::string& k) {
     typename expect_map_t::const_iterator i = expect_from_key.find(k);
     if (i != expect_from_key.end()) expected_field = i->second;
     else expected_field.type = field_type::t_ignore;
 }
 
 template <class T>
-void deserializer_base<T>::start_object() { }
+void deserializer<T>::start_object() { }
 template <class T>
-void deserializer_base<T>::end_object() { }
+void deserializer<T>::end_object() { }
 
 template <class T>
-void deserializer_base<T>::start_array() { }
+void deserializer<T>::start_array() { }
 template <class T>
-void deserializer_base<T>::end_array() { }
+void deserializer<T>::end_array() { }
 
 template <class T>
-void deserializer_base<T>::value(const std::string& v) {
+void deserializer<T>::value(const std::string& v) {
     if (expected_field.type == field_type::t_string) t.*expected_field.field.t_string = v;
 }
 
 template <class T>
-void deserializer_base<T>::value(int v) {
+void deserializer<T>::value(int v) {
     if (expected_field.type == field_type::t_int) t.*expected_field.field.t_int = v;
 }
 
 template <class T>
-void deserializer_base<T>::value(double v) {
+void deserializer<T>::value(double v) {
     if (expected_field.type == field_type::t_double) t.*expected_field.field.t_double = v;
 }
 
 template <class T>
-void deserializer_base<T>::value(bool_type v) {
+void deserializer<T>::value(bool_type v) {
     if (expected_field.type == field_type::t_bool) t.*expected_field.field.t_bool = v.value;
 }
 
 template <class T>
-void deserializer_base<T>::value(null_type) {
+void deserializer<T>::value(null_type) {
     assert(false);
 }
 
 } // namespace jsonxx
 
-#endif // JSONXX_DESERIALIZER_BASE_HPP
+#endif // JSONXX_DESERIALIZER_HPP
