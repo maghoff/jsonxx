@@ -74,6 +74,15 @@ void parser::parse(const std::string& str) {
     parse(str.data(), str.data() + str.length());
 }
 
+void parser::parse(std::istream& in) {
+    const size_t bs = 65536;
+    char buffer[bs];
+    while (in.good()) {
+        in.read(buffer, bs);
+        parse(buffer, buffer + in.gcount());
+    }
+}
+
 bool parser::is_done() const {
     return json_parser_is_done(p.get());
 }

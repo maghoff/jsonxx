@@ -1,6 +1,7 @@
 #ifndef JSONXX_PARSER_HPP
 #define JSONXX_PARSER_HPP
 
+#include <istream>
 #include <memory>
 #include <string>
 
@@ -27,6 +28,9 @@ public:
 
     void parse(const char* begin, const char* end);
     void parse(const std::string&);
+
+    // Will consume the entire istream
+    void parse(std::istream&);
 
     bool is_done() const;
 };
