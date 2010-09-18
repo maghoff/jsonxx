@@ -3,7 +3,7 @@
 
 #include <cassert>
 #include "object_listener.hpp"
-#include "deserializer.hpp"
+#include "type_information.hpp"
 
 namespace jsonxx {
 
