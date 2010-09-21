@@ -74,7 +74,7 @@ def main():
     css = open(css_file, 'r').read()
 
     print header % css
-    print markdown.markdown(document, ['codehilite'])
+    print markdown.markdown(document, ['codehilite', 'toc'])
     print footer
     
     return 0
