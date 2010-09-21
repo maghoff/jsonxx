@@ -1,0 +1,202 @@
+html {
+    margin-left: auto;
+    margin-right: auto;
+
+    max-width: 55em;
+    background-color: /*darkorange4;*/ #FF8020;
+}
+
+body {
+    background-color: white;
+    padding: 5em;
+    padding-top: 1em;
+    margin-top: 0;
+}
+
+a:link {
+    color: darkorange4;
+    text-decoration: none;
+}
+
+a:visited {
+    color: darkorange4;
+    text-decoration: none;
+}
+
+a:hover {
+    color: darkorange;
+    text-decoration: underline;
+}
+
+hr {
+    color: #FF8020;
+    background-color: #FF8020;
+    border: 0;
+    height: 2px;
+}
+
+h1, h2, h3 {
+    color: #FF8020;
+    font-family: sans-serif;
+    text-shadow: 1px 1px 1px #BBB;
+}
+
+h4 {
+    color: #FF8020;
+    text-shadow: 1px 1px 1px #BBB;
+}
+
+h1 {
+    margin-left: -1em;
+
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+}
+
+h2 {
+    margin-top: 2em;
+    margin-left: -0.4em;
+    padding-left: 0.2em;
+    background-color: #FFF9E0;
+    border-bottom-width: 1px;
+    border-bottom-style: dotted;
+}
+
+p, li {
+    line-height: 150%;
+    text-align: justify;
+}
+
+pre {
+    overflow: auto;
+}
+
+/* Not sure if I want inline code to have a background colour
+.codehilite {
+    background-color: #FFF9E0;
+}
+*/
+
+div.codehilite, div.fragment, div.terminal, div.figure {
+/*    overflow: auto;*/
+
+    background-color: #FFF9E0;
+
+    /*padding: 0.5em;*/
+    border-color: #FF8020;
+    border-style: solid hidden solid hidden;
+    border-width: 1px;
+
+/*    padding-left: 2em; */
+/*    margin-left: 0.1em;
+    border-color: #FF8020;
+    border-left-style: dotted;
+    border-left-width: 1pt;*/
+}
+
+div.codehilite div.tag {
+    background-color: #FF8020;
+    text-align: right;
+    border-width: 1px;
+    padding: 1pt 0.5em 2pt 0.5em;
+}
+
+div.codehilite div.tag a {
+    color: black;
+}
+
+div.codehilite div.annotation {
+    float: right;
+    font-family: sans-serif;
+    font-size: 200%;
+    font-weight: bold;
+    color: #F8e0d0;
+}
+
+div.figure {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    font-style: italic;
+    overflow: auto;
+}
+
+div.figure object, div.figure img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.fragment a.code:link, .fragment a.code:visited { color: black; text-decoration: none; }
+.fragment a.code:hover { color: black; text-decoration: underline; }
+
+.codehilite span.c, .codehilite span.c1, .fragment span.comment { color: grey; font-style: italic; } /* Comment */
+.codehilite span.cp, .fragment span.preprocessor { color: green; } /* Preprocessor */
+.codehilite span.k, .fragment span.keywordflow, .fragment span.keyword { font-weight: bold; } /* Keywords */
+.codehilite span.kt, .fragment span.keywordtype { color: maroon; } /* Keywords/type */
+.codehilite span.n { } /* Identifier */
+.codehilite span.o { } /* Operator */
+.codehilite span.p { } /* Parenthesis */
+.codehilite span.s { color: red; } /* String */
+.codehilite span.mi { color: blue; } /* Decimal numbers */
+.codehilite span.mh { color: darkcyan; } /* Hexadecimal numbers */
+.codehilite span.mo { color: darkcyan; } /* Octal numbers */
+.codehilite span.mf { color: darkmagenta; } /* Floating point numbers */
+
+/* BASH */
+.codehilite span.nb { font-weight: bold; } /* Builtin? */
+.codehilite span.nv { color: green; } /* Variable */
+.codehilite span.s2 { color: red; } /* String */
+
+/* Python */
+.codehilite span.bp { color: maroon; } /* Builtin? */
+
+.terminal span.terminal-blue { color: blue; }
+.terminal span.terminal-grey { color: grey; }
+.terminal span.log-bug { color: white; background-color: red; font-weight: bold; }
+.terminal span.log-failure { color: red; font-weight: bold; }
+.terminal span.log-error { color: red; }
+.terminal span.log-warning { color: orange; }
+.terminal span.log-notice { color: black; }
+.terminal span.log-operation { color: grey; }
+.terminal span.log-input { color: magenta; }
+.terminal span.log-output { color: magenta4; }
+.terminal span.log-state { color: green2; }
+.terminal span.log-trace { color: green; }
+
+/* Doxygen */
+
+div.tabs {
+    /*float: left;*/
+    /*position: relative;*/
+
+/*
+    background-color: white;
+    border-style: solid;
+    border-width: 1em;
+    border-color: #FF8020;
+*/
+
+    background-color: #FFF9E0;
+
+    /*padding: 0.5em;*/
+    border-color: #FF8020;
+    border-style: solid hidden solid hidden;
+    border-width: 1px;
+
+    font-size: 80%;
+    font-weight: bold;
+}
+
+div.tabs ul {
+    list-style: none;
+    padding: 1em;
+}
+
+div.tabs li.current a {
+    color: black;
+}
+
+div.nav {
+    /* Temporary. Too ugly :) */
+    visibility: hidden;
+}

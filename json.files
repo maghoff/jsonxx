@@ -38,3 +38,4 @@ src/deserializer.cpp
 src/serializer.hpp
 src/serializer.cpp
 src/type_information.hpp
+src/documentation.md
