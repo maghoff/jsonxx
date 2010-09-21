@@ -15,7 +15,13 @@ namespace jsonxx {
 
 This type is used to avoid problems with string literals (`const char*`)
 implicitly being cast to bool. It is assumed that the user is less likely
-to use bool values than string literal values.
+to use bool values than string literal values. This is the entire definition:
+
+    :::c++
+    struct bool_type {
+        bool value;
+        explicit bool_type(bool value_) : value(value_) { }
+    };
 */
 struct bool_type {
     bool value;
@@ -30,7 +36,10 @@ struct bool_type {
 
 `null_type` is a class representing the special JSON value "null". When
 needing an instance of this class, it is possible to use the global variable
-`jsonxx::null`.
+`jsonxx::null`. This is the entire definition:
+
+    :::c++
+    class null_type { };
 */
 class null_type { };
 extern JSONXX_DECLSPEC null_type null;
