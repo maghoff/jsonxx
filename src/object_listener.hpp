@@ -112,7 +112,7 @@ public:
     // If you don't want to use the overloaded interface:
     /*doc* #### `void value_bool(bool b)` ####
       This is equivalent to `value(bool_type(b))`, and has been included for
-      convenience. */
+      convenience. (See also [`bool_type`](#bool_type)) */
     void value_bool(bool b) { value(bool_type(b)); }
 
     /*doc* #### `void value_null()` ####
