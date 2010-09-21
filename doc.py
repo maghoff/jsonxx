@@ -65,7 +65,7 @@ def main():
     document = ""
     
     for fragment in generate_doc_fragments(doc_file):
-        sf = fragment.strip()
+        sf = fragment.strip(' ')
         partitions = sf.partition('\n')
         document += partitions[0] + '\n'
         document += textwrap.dedent(partitions[2])
