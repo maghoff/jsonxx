@@ -98,18 +98,15 @@ public:
 
     /*doc*
           :::c++
-          void value(T)
-
-      A call to a function of the name value represents a value in a
-      key-value-pair in an object or a value in an array. There are five
-      fundamental overloads of the value-function:
-
-          :::c++
           void value(const std::string&); // For string values
           void value(int); // For number values that have no fractional part
           void value(double); // For other number values
           void value(bool_type); // For boolean values
           void value(null_type); // For the special value "null"
+
+      A call to a function of the name value represents a value in a
+      key-value-pair in an object or a value in an array. Each overload
+      represents a JSON type as noted above.
     */
     virtual void value(const std::string&) = 0;
     virtual void value(int) = 0;
@@ -117,8 +114,7 @@ public:
     virtual void value(bool_type) = 0;
     virtual void value(null_type) = 0;
 
-    /*doc*<br/>
-
+    /*doc*
           :::c++
           void value_bool(bool b)
 
