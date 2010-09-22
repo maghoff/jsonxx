@@ -7,6 +7,12 @@
 
 #include "declspec.hpp"
 
+#ifdef _MSC_VER
+#pragma warning(push)
+// C4275: Warning about std::runtime_error not being dll-exported.
+#pragma warning(disable: 4275)
+#endif
+
 namespace jsonxx {
 
 class JSONXX_DECLSPEC encoding_error : public std::runtime_error {
@@ -21,6 +27,10 @@ public:
 JSONXX_DECLSPEC void write_quoted_string(std::ostream&, const std::string&);
 
 } // namespace jsonxx
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 #undef JSONXX_DECLSPEC
 
