@@ -25,10 +25,14 @@ jsonxx::type_information<simple_struct>::info_map_t create_info_map_for_simple_s
     return m;
 }
 
+}
+
 template <>
 jsonxx::type_information<simple_struct>::info_map_t
     jsonxx::type_information<simple_struct>::info_map = create_info_map_for_simple_struct();
 
+
+namespace {
 
 bool serialize_simple_struct() {
     bool ok = true;
