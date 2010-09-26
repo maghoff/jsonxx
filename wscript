@@ -70,12 +70,14 @@ class msvc_configurator:
         env.append_unique('CXXFLAGS', '/RTC1')
         env.append_unique('LINKFLAGS', '/DEBUG')
         env.append_unique('CXXDEFINES', 'DEBUG')
+        env.append_unique('CCFLAGS', '/MDd')
         env.append_unique('CCDEFINES', 'DEBUG')
 
     @staticmethod
     def release_mode(env):
         env.append_unique('CXXFLAGS', '/MD')
         env.append_unique('CXXDEFINES', 'NDEBUG')
+        env.append_unique('CCFLAGS', '/MD')
         env.append_unique('CCDEFINES', 'NDEBUG')
 
     @staticmethod
