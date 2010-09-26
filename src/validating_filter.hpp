@@ -7,11 +7,9 @@
 
 #include "declspec.hpp"
 
-#ifdef WIN32
+#ifdef _MSC_VER
 #pragma warning(push)
 // C4251: Warning about std::stack<state_t> not being dll-exported.
-//     This is irrelevant in our case, since the stack is not
-//     accessible to users (even subclasses) of this class.
 #pragma warning(disable: 4251)
 #endif
 
@@ -65,7 +63,7 @@ public:
 
 } // namespace jsonxx
 
-#ifdef WIN32
+#ifdef _MSC_VER
 #pragma warning(pop)
 #endif
 

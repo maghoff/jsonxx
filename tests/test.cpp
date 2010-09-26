@@ -7,6 +7,7 @@ extern bool raii_tests();
 extern bool serializing_tests();
 extern bool util_tests();
 extern bool validating_filter_tests();
+extern bool util_tests();
 
 int main() {
     bool ok = true;
@@ -18,6 +19,7 @@ int main() {
     ok &= serializing_tests();
     ok &= util_tests();
     ok &= validating_filter_tests();
+    ok &= util_tests();
 
     return ok ? 0 : 1;
 }
