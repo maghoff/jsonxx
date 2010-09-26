@@ -84,7 +84,7 @@ void parser::parse(std::istream& in) {
 }
 
 bool parser::is_done() const {
-    return json_parser_is_done(p.get());
+    return json_parser_is_done(p.get()) != 0;
 }
 
 } // namespace jsonxx
