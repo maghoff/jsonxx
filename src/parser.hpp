@@ -7,6 +7,12 @@
 
 #include "declspec.hpp"
 
+#ifdef _MSC_VER
+#pragma warning(push)
+// C4251: Warning about std::auto_ptr<json_parser> not being dll-exported.
+#pragma warning(disable: 4251)
+#endif
+
 struct json_parser;
 
 namespace jsonxx {
@@ -36,6 +42,10 @@ public:
 };
 
 } // namespace jsonxx
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 #undef JSONXX_DECLSPEC
 
