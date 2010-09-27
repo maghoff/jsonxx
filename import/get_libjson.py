@@ -1,10 +1,11 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import subprocess, os
 
 SOURCE="http://github.com/vincenthz/libjson.git"
 TARGET="libjson"
-TAG="v0.8"
+TAG="126c44701f34fe5cd92732b904e4bb216adc906d" # ~v0.9
 
 
 def get_libjson():
