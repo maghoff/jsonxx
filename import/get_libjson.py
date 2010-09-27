@@ -8,13 +8,21 @@ TARGET="libjson"
 TAG="126c44701f34fe5cd92732b904e4bb216adc906d" # ~v0.9
 
 
-def get_libjson():
-    if os.path.isdir(TARGET):
-        print "%s exists. Declaring successful acquisition of libjson %s" % (TARGET, TAG)
-        return 0
+def acquire_checkout():
+    if not os.path.isdir(TARGET):
+        subprocess.check_call(['git', 'clone', SOURCE, TARGET])
 
-    subprocess.check_call(['git', 'clone', SOURCE, TARGET])
-    subprocess.check_call(['git', 'checkout', TAG], cwd = TARGET)
+def ensure_revision():
+    ret = subprocess.call(['git', 'checkout', TAG], cwd = TARGET)
+
+    if ret != 0:
+        subprocess.check_call(['git', 'pull', SOURCE, 'master'], cwd = TARGET)
+        subprocess.check_call(['git', 'checkout', TAG], cwd = TARGET)
+
+
+def get_libjson():
+    acquire_checkout()
+    ensure_revision()
 
     return 0
 
