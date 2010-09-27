@@ -4,20 +4,24 @@
 def build(bld):
     sources = [
         'compact_writer.cpp',
+        'deserializer.cpp',
         'indenting_writer.cpp',
         'null_object_listener.cpp',
         'object_filter.cpp',
         'object_listener.cpp',
+        'parser.cpp',
+        'serializer.cpp',
         'util.cpp',
         'validating_filter.cpp',
         'writer_base.cpp',
+        '../import/libjson/json.c',
     ]
 
     obj = bld.new_task_gen(
-        features='cxx cshlib',
+        features='cc cxx cstaticlib',
         source=sources,
         target='jsonxx',
-        defines=['JSONXX_LINK_VARIANT=2'],
+        defines=['JSONXX_LINK_VARIANT=3'],
     )
 
     # This is a bit of a peculiar waf-thing. The build

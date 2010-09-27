@@ -6,3 +6,5 @@ waf*
 build
 .lock-wscript
 
+import/libjson
+documentation.html

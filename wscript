@@ -7,6 +7,7 @@ blddir='build'
 srcdir="."
 
 def set_options(opt):
+    opt.tool_options('compiler_cc')
     opt.tool_options('compiler_cxx')
 
 
@@ -19,24 +20,30 @@ class gcc_configurator:
     def debug_mode(env):
         env.append_unique('CXXFLAGS', '-ggdb')
         env.append_unique('CXXDEFINES', 'DEBUG')
+        env.append_unique('CCFLAGS', '-ggdb')
+        env.append_unique('CCDEFINES', 'DEBUG')
 
     @staticmethod
     def release_mode(env):
         env.append_unique('CXXDEFINES', 'NDEBUG')
+        env.append_unique('CCDEFINES', 'NDEBUG')
         env.append_unique('LINKFLAGS', '-s')
 
     @staticmethod
     def optimize(env):
         env.append_unique('CXXFLAGS', '-O3')
+        env.append_unique('CCFLAGS', '-O3')
 
     @staticmethod
     def many_warnings(env):
         env.append_unique('CXXFLAGS', '-Wall')
+        env.append_unique('CCFLAGS', '-Wall')
         env.append_unique('LINKFLAGS', '-Wall')
 
     @staticmethod
     def warnings_as_errors(env):
         env.append_unique('CXXFLAGS', '-Werror')
+        env.append_unique('CCFLAGS', '-Werror')
         env.append_unique('LINKFLAGS', '-Werror')
 
     @staticmethod
@@ -63,15 +70,20 @@ class msvc_configurator:
         env.append_unique('CXXFLAGS', '/RTC1')
         env.append_unique('LINKFLAGS', '/DEBUG')
         env.append_unique('CXXDEFINES', 'DEBUG')
+        env.append_unique('CCFLAGS', '/MDd')
+        env.append_unique('CCDEFINES', 'DEBUG')
 
     @staticmethod
     def release_mode(env):
         env.append_unique('CXXFLAGS', '/MD')
         env.append_unique('CXXDEFINES', 'NDEBUG')
+        env.append_unique('CCFLAGS', '/MD')
+        env.append_unique('CCDEFINES', 'NDEBUG')
 
     @staticmethod
     def optimize(env):
         env.append_unique('CXXFLAGS', '/O2')
+        env.append_unique('CCFLAGS', '/O2')
 
     @staticmethod
     def many_warnings(env):
@@ -80,18 +92,25 @@ class msvc_configurator:
     @staticmethod
     def warnings_as_errors(env):
         env.append_unique('CXXFLAGS', '/WX')
+        env.append_unique('CCFLAGS', '/WX')
         env.append_unique('LINKFLAGS', '/WX')
 
     @staticmethod
     def link_time_code_generation(env):
         env.append_unique('CXXFLAGS', '/GL')
+        env.append_unique('CCFLAGS', '/GL')
         env.append_unique('LINKFLAGS', '/LTCG')
 
 
 def configure(conf):
+    # libjson is a necessary dependency:
+    import subprocess, sys
+    subprocess.check_call([sys.executable, 'get_libjson.py'], cwd='import')
+
     conf.env['MSVC_VERSIONS'] = ['msvc 9.0']
     conf.env['MSVC_TARGETS'] = ['x86']
 
+    conf.check_tool('compiler_cc')
     conf.check_tool('compiler_cxx')
 
     compiler_configurators = {

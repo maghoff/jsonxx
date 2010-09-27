@@ -3,7 +3,7 @@
 
 // Sensible fallback if JSONXX_LINK_VARIANT is not defined:
 #ifndef JSONXX_LINK_VARIANT
-#define JSONXX_LINK_VARIANT 1
+#define JSONXX_LINK_VARIANT 3
 #endif
 
 
