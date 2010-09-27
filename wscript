@@ -66,7 +66,6 @@ class msvc_configurator:
     def debug_mode(env):
         env.append_unique('CXXFLAGS', '/MDd')
         env.append_unique('CXXFLAGS', '/Od')
-        env.append_unique('CXXFLAGS', '/Zi')
         env.append_unique('CXXFLAGS', '/RTC1')
         env.append_unique('LINKFLAGS', '/DEBUG')
         env.append_unique('CXXDEFINES', 'DEBUG')
