@@ -15,7 +15,7 @@ class gcc_configurator:
     @staticmethod
     def sane_default(env):
         env.append_unique('CCFLAGS', '-fPIC')
-        env.append_unique('CFLAGS', '-fPIC')
+        env.append_unique('CXXFLAGS', '-fPIC')
         env.append_unique('LINKFLAGS', '-fPIC')
 
     @staticmethod
