@@ -14,7 +14,9 @@ def set_options(opt):
 class gcc_configurator:
     @staticmethod
     def sane_default(env):
-        pass
+        env.append_unique('CCFLAGS', '-fPIC')
+        env.append_unique('CFLAGS', '-fPIC')
+        env.append_unique('LINKFLAGS', '-fPIC')
 
     @staticmethod
     def debug_mode(env):
