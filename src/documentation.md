@@ -25,6 +25,14 @@ the most important:
     compiler specific code.
 
 
+Installation
+------------
+
+ 1. Get hold of the source code: `hg clone http://hg/hg/jsonxx && cd jsonxx`
+ 2. Build: `./waf configure && ./waf build && ./waf check`
+ 3. Build documentation: `./doc.py > documentation.html`
+
+
 Tutorial
 --------
 
@@ -217,6 +225,31 @@ debug such usage, you want to use the `validating_filter`:
 
         return 0;
     }
+
+
+### Parsing ###
+
+    :::c++
+    #include <cassert>
+    #include <sstream>
+    #include <jsonxx/compact_writer.hpp>
+    #include <jsonxx/parser.hpp>
+
+    int main() {
+        std::string json = "{\"a\":42,\"b\":[1,2,3]}";
+
+        std::stringstream out;
+        jsonxx::compact_writer iw(out);
+        jsonxx::parser p(&iw);
+
+        p.parse(json);
+
+        assert(p.is_done());
+        assert(out.str() == json);
+
+        return 0;
+    }
+
 
 */
 
