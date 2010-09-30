@@ -137,6 +137,7 @@ div.figure object, div.figure img {
 .codehilite span.o { } /* Operator */
 .codehilite span.p { } /* Parenthesis */
 .codehilite span.s { color: red; } /* String */
+.codehilite span.se { color: red; } /* Escape sequences inside a string */
 .codehilite span.mi { color: blue; } /* Decimal numbers */
 .codehilite span.mh { color: darkcyan; } /* Hexadecimal numbers */
 .codehilite span.mo { color: darkcyan; } /* Octal numbers */
