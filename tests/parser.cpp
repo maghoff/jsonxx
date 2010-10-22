@@ -139,6 +139,15 @@ bool incremental() {
     return ok;
 }
 
+bool array() {
+    bool ok = true;
+
+    std::string res = roundtrip("{ \"a\": [1, 2, 3] }");
+    CHECK_EQUAL(res, "{\"a\":[1,2,3]}");
+
+    return ok;
+}
+
 }
 
 bool parser_tests() {
@@ -154,6 +163,7 @@ bool parser_tests() {
     ok &= EXEC(utf8_string);
     ok &= EXEC(string_with_unicode_escapes);
     ok &= EXEC(incremental);
+    ok &= EXEC(array);
 
     return ok;
 }

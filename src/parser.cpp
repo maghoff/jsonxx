@@ -32,6 +32,7 @@ int parser_callback(void *userdata, int type, const char *data, uint32_t length)
     case JSON_OBJECT_BEGIN: target->start_object(); break;
     case JSON_OBJECT_END: target->end_object(); break;
     case JSON_ARRAY_BEGIN: target->start_array(); break;
+    case JSON_ARRAY_END: target->end_array(); break;
     case JSON_KEY: target->key(std::string(data, length)); break;
     case JSON_STRING: target->value(std::string(data, length)); break;
     case JSON_INT: target->value(my_lexical_cast<int>(data, length)); break;
