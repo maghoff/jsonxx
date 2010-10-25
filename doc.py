@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import textwrap, markdown, os
+import textwrap, markdown, os, base64
 
 
 doc_file = 'src/documentation.md'
@@ -19,6 +19,7 @@ header = """\
 
 footer = """\
 </body>
+</html>
 """
 
 include_tag = '//doc-include:'
@@ -61,9 +62,15 @@ def generate_doc_fragments(filename):
 
             yield buf[o + len(open_tag):c]
 
+def create_image():
+    data_uri_scheme = '<img src="data:image/jpeg;base64,%s" alt="STREEM PROSESING lambdacat" />'
+    with open('stream_processing.jpg', 'rb') as f:
+        data = f.read()
+    return data_uri_scheme % base64.b64encode(data)
+
 def main():
     document = ""
-    
+
     for fragment in generate_doc_fragments(doc_file):
         sf = fragment.strip(' ')
         partitions = sf.partition('\n')
@@ -74,9 +81,9 @@ def main():
     css = open(css_file, 'r').read()
 
     print header % css
-    print markdown.markdown(document, ['codehilite', 'toc'])
+    print markdown.markdown(document, ['codehilite', 'toc']).replace('[[[[JSONXX:STREEM PROSESING]]]]', create_image())
     print footer
-    
+
     return 0
 
 

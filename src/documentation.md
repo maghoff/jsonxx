@@ -24,6 +24,7 @@ the most important:
  3. Prefer to minimize external dependencies, platform specific code and
     compiler specific code.
 
+[[[[JSONXX:STREEM PROSESING]]]]
 
 Installation
 ------------
@@ -31,6 +32,7 @@ Installation
  1. Get hold of the source code: `hg clone http://hg/hg/jsonxx && cd jsonxx`
  2. Build: `./waf configure && ./waf build && ./waf check`
  3. Build documentation: `./doc.py > documentation.html`
+ 4. For UNIX-like systems: `./unix/install.sh`
 
 
 Tutorial
