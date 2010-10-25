@@ -7,8 +7,13 @@
 PREFIX=/usr
 LIB_DIR="$PREFIX/lib"
 INCLUDE_DIR="$PREFIX/include/jsonxx"
+PKGCONFIG_DIR="$PREFIX/lib/pkgconfig"
 
+mkdir -p "$LIB_DIR"
 cp build/release/src/libjsonxx.a "$LIB_DIR/"
 
 mkdir -p "$INCLUDE_DIR"
 cp src/*.hpp "$INCLUDE_DIR/"
+
+mkdir -p "$PKGCONFIG_DIR"
+cp unix/jsonxx.pc "$PKGCONFIG_DIR/"

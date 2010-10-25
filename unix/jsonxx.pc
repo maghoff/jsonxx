@@ -1,0 +1,8 @@
+prefix=/usr
+version=0.0.0
+
+Name: jsonxx
+Description: Streaming JSON parsing and generating library
+Version: ${version}
+Libs: -L${prefix}/lib -ljsonxx
+Cflags: -I${prefix}/include
