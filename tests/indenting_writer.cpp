@@ -169,6 +169,54 @@ bool function_overload() {
     return ok;
 }
 
+bool nesting_empty_object() {
+    bool ok = true;
+
+    std::stringstream ss;
+    jsonxx::indenting_writer cw(ss);
+
+    cw.start_object();
+    cw.key("a");
+    cw.start_object();
+    cw.end_object();
+    cw.pair("b", 5);
+    cw.end_object();
+
+    CHECK_EQUAL(ss.str(),
+        "{\n"
+        "    \"a\": {\n"
+        "    },\n"
+        "    \"b\": 5\n"
+        "}"
+    );
+
+    return ok;
+}
+
+bool nesting_empty_array() {
+    bool ok = true;
+
+    std::stringstream ss;
+    jsonxx::indenting_writer cw(ss);
+
+    cw.start_object();
+    cw.key("a");
+    cw.start_array();
+    cw.end_array();
+    cw.pair("b", 5);
+    cw.end_object();
+
+    CHECK_EQUAL(ss.str(),
+        "{\n"
+        "    \"a\": [\n"
+        "    ],\n"
+        "    \"b\": 5\n"
+        "}"
+    );
+
+    return ok;
+}
+
 }
 
 bool indenting_writer_tests() {
@@ -182,6 +230,8 @@ bool indenting_writer_tests() {
     ok &= E(list);
     ok &= E(complex_nesting_all_types);
     ok &= E(function_overload);
+    ok &= E(nesting_empty_object);
+    ok &= E(nesting_empty_array);
 
     return ok;
 }

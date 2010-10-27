@@ -26,6 +26,7 @@ public:
     void key(const std::string&);
 
     void start_object();
+    void end_object();
     void start_array();
 };
 

@@ -63,6 +63,7 @@ void indenting_writer::end_object() {
     indentation_level--;
     newline();
     writer_base::end_object();
+    state = other;
 }
 
 void indenting_writer::start_array() {
@@ -75,6 +76,7 @@ void indenting_writer::end_array() {
     indentation_level--;
     newline();
     writer_base::end_array();
+    state = other;
 }
 
 }

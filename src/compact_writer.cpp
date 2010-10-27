@@ -37,6 +37,11 @@ void compact_writer::start_object() {
     state = skip_key_comma;
 }
 
+void compact_writer::end_object() {
+    writer_base::end_object();
+    state = other;
+}
+
 void compact_writer::start_array() {
     writer_base::start_array();
     state = skip_array_comma;
