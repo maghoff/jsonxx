@@ -431,6 +431,26 @@ bool compact_writer_nesting_empty_array() {
     return ok;
 }
 
+bool compact_writer_nesting_empty_array_in_array() {
+    bool ok = true;
+
+    std::stringstream ss;
+    jsonxx::compact_writer cw(ss);
+
+    cw.start_object();
+    cw.key("a");
+    cw.start_array();
+    cw.start_array();
+    cw.end_array();
+    cw.value(5);
+    cw.end_array();
+    cw.end_object();
+
+    CHECK_EQUAL(ss.str(), "{\"a\":[[],5]}");
+
+    return ok;
+}
+
 }
 
 bool compact_writer_tests() {
@@ -455,6 +475,7 @@ bool compact_writer_tests() {
     ok &= EXEC(compact_writer_complex_nesting_all_types);
     ok &= EXEC(compact_writer_nesting_empty_object);
     ok &= EXEC(compact_writer_nesting_empty_array);
+    ok &= EXEC(compact_writer_nesting_empty_array_in_array);
 
     return ok;
 }

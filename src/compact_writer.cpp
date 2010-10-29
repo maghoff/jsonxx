@@ -47,4 +47,9 @@ void compact_writer::start_array() {
     state = skip_array_comma;
 }
 
+void compact_writer::end_array() {
+    writer_base::end_array();
+    state = other;
+}
+
 }

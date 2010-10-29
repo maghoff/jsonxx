@@ -28,6 +28,7 @@ public:
     void start_object();
     void end_object();
     void start_array();
+    void end_array();
 };
 
 } // namespace jsonxx
