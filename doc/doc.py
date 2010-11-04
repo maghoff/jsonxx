@@ -7,7 +7,7 @@ import textwrap, markdown, os, base64
 doc_file = 'src/documentation.md'
 
 
-css_file = 'jsonxx.css'
+css_file = 'doc/jsonxx.css'
 
 header = """\
 <html>
@@ -64,7 +64,7 @@ def generate_doc_fragments(filename):
 
 def create_image():
     data_uri_scheme = '<img src="data:image/jpeg;base64,%s" alt="STREEM PROSESING lambdacat" />'
-    with open('stream_processing.jpg', 'rb') as f:
+    with open('doc/stream_processing.jpg', 'rb') as f:
         data = f.read()
     return data_uri_scheme % base64.b64encode(data)
 
