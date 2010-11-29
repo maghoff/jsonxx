@@ -29,7 +29,7 @@ the most important:
 Installation
 ------------
 
- 1. Get hold of the source code: `hg clone http://hg/hg/jsonxx && cd jsonxx`
+ 1. Get hold of the source code: `hg clone http://bitbucket.org/maghoff/jsonxx && cd jsonxx`
  2. Build: `./waf configure && ./waf build && ./waf check`
  3. Build documentation: `./doc/doc.py > documentation.html`
  4. For UNIX-like systems: `./unix/install.sh`
