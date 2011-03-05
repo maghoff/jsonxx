@@ -18,9 +18,7 @@ The design of JSONxx has been guided by the following principles, in order from
 the most important:
 
  1. Prefer to stream the data rather than buffer it.
- 2. Prefer ease of use to correctness. (For example when reading large
-    integers, JSONxx will silently overflow if the integer will not fit in an
-    `int`)
+ 2. Aim for ease of use. (Possibly at the expense of ease of implementation)
  3. Prefer to minimize external dependencies, platform specific code and
     compiler specific code.
 
