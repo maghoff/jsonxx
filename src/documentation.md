@@ -24,6 +24,26 @@ the most important:
 
 [[[[JSONXX:STREEM PROSESING]]]]
 
+
+Status
+------
+
+This document describes version 1 of the library.
+
+JSONxx was written by me, Magnus Hoff, to solve my JSON generating problems
+once and for all. This means that even though JSON parsing has been tacked on,
+the library is not really designed with parsing in mind. I hope to address
+this in a future version.
+
+Several other libraries use the name JSONxx (with varying capitalization). I
+should find a new and better name.
+
+My employer at the time I wrote this library, [Vizrt](http://www.vizrt.com/),
+was generous enough to open source it under [the MIT license][MIT].
+
+[MIT]: http://www.opensource.org/licenses/mit-license.php
+
+
 Installation
 ------------
 
