@@ -38,8 +38,8 @@ this in a future version.
 Several other libraries use the name JSONxx (with varying capitalization). I
 should find a new and better name.
 
-This library is written by me, Magnus Hoff, and open sourced under
-[the MIT license][MIT] by [Vizrt](http://www.vizrt.com/).
+This library is open sourced under [the MIT license][MIT] by
+[Vizrt](http://www.vizrt.com/).
 
 The [source][source] is currently hosted at bitbucket.
 
