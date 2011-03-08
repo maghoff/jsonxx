@@ -221,8 +221,8 @@ This program outputs:
 
 By the semantics of JSON, it does not make sense to call `key` while generating
 the contents of an array. Conversely, when you are generating the contents of an
-object, you should not call `value` several times in a row -- `key` is required.
-These are examples of invalid input for an `object_listener`.
+object, you should not call `value` several times in a row -- here `key` is
+required. These are examples of invalid input for an `object_listener`.
 
 Classes derived from `object_listener` are not expected to handle invalid input
 in a well-defined manner, so if you want to detect and debug such usage, you
