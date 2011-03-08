@@ -38,10 +38,13 @@ this in a future version.
 Several other libraries use the name JSONxx (with varying capitalization). I
 should find a new and better name.
 
-My employer at the time I wrote this library, [Vizrt](http://www.vizrt.com/),
-was generous enough to open source it under [the MIT license][MIT].
+This library is written by me, Magnus Hoff, and open sourced under
+[the MIT license][MIT] by [Vizrt](http://www.vizrt.com/).
+
+The [source][source] is currently hosted at bitbucket.
 
 [MIT]: http://www.opensource.org/licenses/mit-license.php
+[source]: http://bitbucket.org/maghoff/jsonxx
 
 
 Installation
@@ -217,12 +220,13 @@ This program outputs:
 ### Using `validating_filter` ###
 
 By the semantics of JSON, it does not make sense to call `key` while generating
-the contents of an array. While generating the contents of an object, `value`
-may not be called several times in a row -- `key` is required.
+the contents of an array. Conversely, when you are generating the contents of an
+object, you should not call `value` several times in a row -- `key` is required.
+These are examples of invalid input for an `object_listener`.
 
-Classes derived from `object_listener` are not in general expected to handle
-invalid input like this in a well-defined manner, so if you want to detect and
-debug such usage, you want to use the `validating_filter`:
+Classes derived from `object_listener` are not expected to handle invalid input
+in a well-defined manner, so if you want to detect and debug such usage, you
+want to use the `validating_filter`:
 
     :::c++
     #include <iostream>
