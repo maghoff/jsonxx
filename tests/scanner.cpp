@@ -51,6 +51,19 @@ bool scanner_ignores_whitespace() {
 	return ok;
 }
 
+bool scanner_all_simple_lexemes() {
+	bool ok = true;
+
+	test_scanner_listener listener;
+	jsonxx::scanner s(listener);
+
+	s.scan("{}[]:, \n\r");
+
+	CHECK_EQUAL(listener.event_stream.str(), "{}[]:,");
+
+	return ok;
+}
+
 }
 
 bool scanner_tests() {
@@ -58,6 +71,7 @@ bool scanner_tests() {
 
     ok &= EXEC(scanner_simple_object);
     ok &= EXEC(scanner_ignores_whitespace);
+    ok &= EXEC(scanner_all_simple_lexemes);
 
     return ok;
 }
