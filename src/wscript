@@ -10,6 +10,8 @@ def build(bld):
         'object_filter.cpp',
         'object_listener.cpp',
         'parser.cpp',
+        'scanner.cpp',
+        'scanner_listener.cpp',
         'serializer.cpp',
         'util.cpp',
         'validating_filter.cpp',

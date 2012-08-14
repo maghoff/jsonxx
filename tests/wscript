@@ -4,6 +4,7 @@ def build(bld):
         'indenting_writer.cpp',
         'parser.cpp',
         'raii.cpp',
+        'scanner.cpp',
         'serializing.cpp',
         'test.cpp',
         'test_util.cpp',
