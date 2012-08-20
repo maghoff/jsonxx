@@ -105,6 +105,97 @@ bool scanner_run_test_cases_single_bytes() {
 	return ok;
 }
 
+bool scanner_syntax_error_on_invalid_top_level_input() {
+	bool ok = true;
+
+	test_scanner_listener listener;
+	jsonxx::scanner s(listener);
+
+	try {
+		s.scan("-");
+	}
+	catch (const jsonxx::scanner::syntax_error&) {
+		return true;
+	}
+
+	FAIL("Missing expected exception: syntax_error");
+	return ok;
+}
+
+bool scanner_syntax_error_stops_scanning() {
+	bool ok = true;
+
+	test_scanner_listener listener;
+	jsonxx::scanner s(listener);
+
+	try {
+		s.scan("{-}");
+	}
+	catch (const jsonxx::scanner::syntax_error&) {
+		// pass
+	}
+
+	CHECK_EQUAL(listener.event_stream.str(), "{");
+
+	return ok;
+}
+
+bool scanner_syntax_error_stops_scanning_persistently() {
+	bool ok = true;
+
+	test_scanner_listener listener;
+	jsonxx::scanner s(listener);
+
+	s.scan("{}");
+
+	try {
+		s.scan("-");
+	}
+	catch (const jsonxx::scanner::syntax_error&) {
+		// pass
+	}
+
+	s.scan("[]");
+
+	CHECK_EQUAL(listener.event_stream.str(), "{}");
+
+	return ok;
+}
+
+bool scanner_illegal_char_in_string() {
+	bool ok = true;
+
+	test_scanner_listener listener;
+	jsonxx::scanner s(listener);
+
+	try {
+		s.scan("\"lol\x14zomg\"");
+	}
+	catch (const jsonxx::scanner::syntax_error&) {
+		return true;
+	}
+
+	FAIL("Missing expected exception: syntax_error");
+	return ok;
+}
+
+bool scanner_illegal_escape_sequence_in_string() {
+	bool ok = true;
+
+	test_scanner_listener listener;
+	jsonxx::scanner s(listener);
+
+	try {
+		s.scan("\"lol\\mcat\"");
+	}
+	catch (const jsonxx::scanner::syntax_error&) {
+		return true;
+	}
+
+	FAIL("Missing expected exception: syntax_error");
+	return ok;
+}
+
 }
 
 bool scanner_tests() {
@@ -112,6 +203,12 @@ bool scanner_tests() {
 
     ok &= EXEC(scanner_run_test_cases_big_chunk);
     ok &= EXEC(scanner_run_test_cases_single_bytes);
+
+    ok &= EXEC(scanner_syntax_error_on_invalid_top_level_input);
+    ok &= EXEC(scanner_syntax_error_stops_scanning);
+    ok &= EXEC(scanner_syntax_error_stops_scanning_persistently);
+    ok &= EXEC(scanner_illegal_char_in_string);
+    ok &= EXEC(scanner_illegal_escape_sequence_in_string);
 
     return ok;
 }

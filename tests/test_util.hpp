@@ -17,6 +17,12 @@
         ok = false; \
     }
 
+#define FAIL(msg) \
+    do { \
+	    REPORT(msg) \
+	    ok = false; \
+    } while (false)
+
 bool execute(bool(*f)(), const char* f_name);
 #define EXEC(f) execute(f, #f)
 
