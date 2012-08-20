@@ -25,11 +25,34 @@ struct test_scanner_listener : jsonxx::scanner_listener {
 };
 
 
-bool test_scanner_with_input(const std::string& test_name, int lineno, const std::string& input, const std::string& expected_output) {
+bool test_scanner_with_input_one_chunk(const std::string& test_name, int lineno, const std::string& input, const std::string& expected_output) {
 	test_scanner_listener listener;
 	jsonxx::scanner s(listener);
 
 	s.scan(input);
+	std::string output = listener.event_stream.str();
+
+	bool ok = (output == expected_output);
+
+	if (!ok) {
+	    std::cerr <<
+	    	__FILE__ << ':' << lineno << ": error: "
+	    	"Failed scanner test \"" << test_name << "\" "
+	    	"(" << output << " != " << expected_output << ")" << std::endl;
+	}
+
+	return ok;
+}
+
+bool test_scanner_with_input_single_bytes(const std::string& test_name, int lineno, const std::string& input, const std::string& expected_output) {
+	test_scanner_listener listener;
+	jsonxx::scanner s(listener);
+
+	char buffer[] = { 0, 0, 0, 0, 0 };
+	for (std::string::size_type i = 0; i < input.length(); ++i) {
+		buffer[2] = input[i];
+		s.scan(buffer + 2, buffer + 3);
+	}
 	std::string output = listener.event_stream.str();
 
 	bool ok = (output == expected_output);
@@ -64,11 +87,20 @@ test_case test_cases[] = {
 	CASE("String escape sequences", "\"test\\nescape\\t\\\"sequences\\\"\"", "s(test\nescape\t\"sequences\")"),
 };
 
-bool scanner_run_test_cases() {
+bool scanner_run_test_cases_big_chunk() {
 	bool ok = true;
 	for (size_t i = 0; i < (sizeof(test_cases) / sizeof(test_cases[0])); ++i) {
 		const test_case& c = test_cases[i];
-		ok &= test_scanner_with_input(c.test_name, c.lineno, c.input, c.output);
+		ok &= test_scanner_with_input_one_chunk(c.test_name, c.lineno, c.input, c.output);
+	}
+	return ok;
+}
+
+bool scanner_run_test_cases_single_bytes() {
+	bool ok = true;
+	for (size_t i = 0; i < (sizeof(test_cases) / sizeof(test_cases[0])); ++i) {
+		const test_case& c = test_cases[i];
+		ok &= test_scanner_with_input_single_bytes(c.test_name, c.lineno, c.input, c.output);
 	}
 	return ok;
 }
@@ -78,7 +110,8 @@ bool scanner_run_test_cases() {
 bool scanner_tests() {
     bool ok = true;
 
-    ok &= EXEC(scanner_run_test_cases);
+    ok &= EXEC(scanner_run_test_cases_big_chunk);
+    ok &= EXEC(scanner_run_test_cases_single_bytes);
 
     return ok;
 }
