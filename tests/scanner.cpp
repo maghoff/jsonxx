@@ -25,120 +25,51 @@ struct test_scanner_listener : jsonxx::scanner_listener {
 };
 
 
-bool scanner_simple_object() {
-	bool ok = true;
-
+bool test_scanner_with_input(const std::string& test_name, int lineno, const std::string& input, const std::string& expected_output) {
 	test_scanner_listener listener;
 	jsonxx::scanner s(listener);
 
-	s.scan("{}");
+	s.scan(input);
+	std::string output = listener.event_stream.str();
 
-	CHECK_EQUAL(listener.event_stream.str(), "{}");
+	bool ok = (output == expected_output);
+
+	if (!ok) {
+	    std::cerr <<
+	    	__FILE__ << ':' << lineno << ": error: "
+	    	"Failed scanner test \"" << test_name << "\" "
+	    	"(" << output << " != " << expected_output << ")" << std::endl;
+	}
 
 	return ok;
 }
 
-bool scanner_ignores_whitespace() {
+struct test_case {
+	std::string test_name;
+	int lineno;
+	std::string input;
+	std::string output;
+};
+
+#define CASE(name, input, expected_output) { name, __LINE__, input, expected_output }
+test_case test_cases[] = {
+	CASE("Simple object", "{}", "{}"),
+	CASE("Ignores whitespace", " { \n} \r\n,", "{},"),
+	CASE("All simple lexemes", "{}[]:, \n\r", "{}[]:,"),
+	CASE("Empty string", "\"\"", "s()"),
+	CASE("Empty string and stuff", "}\"\"{", "}s(){"),
+	CASE("Simple string", "\"I am a string\"", "s(I am a string)"),
+	CASE("Simple string and stuff", "}\"I am a string\"{", "}s(I am a string){"),
+	CASE("Two simple strings", "\"a\",\"b\"", "s(a),s(b)"),
+	CASE("String escape sequences", "\"test\\nescape\\t\\\"sequences\\\"\"", "s(test\nescape\t\"sequences\")"),
+};
+
+bool scanner_run_test_cases() {
 	bool ok = true;
-
-	test_scanner_listener listener;
-	jsonxx::scanner s(listener);
-
-	s.scan(" { \n} \r\n,");
-
-	CHECK_EQUAL(listener.event_stream.str(), "{},");
-
-	return ok;
-}
-
-bool scanner_all_simple_lexemes() {
-	bool ok = true;
-
-	test_scanner_listener listener;
-	jsonxx::scanner s(listener);
-
-	s.scan("{}[]:, \n\r");
-
-	CHECK_EQUAL(listener.event_stream.str(), "{}[]:,");
-
-	return ok;
-}
-
-bool scanner_empty_string() {
-	bool ok = true;
-
-	test_scanner_listener listener;
-	jsonxx::scanner s(listener);
-
-	s.scan("\"\"");
-
-	CHECK_EQUAL(listener.event_stream.str(), "s()");
-
-	return ok;
-}
-
-bool scanner_empty_string_and_stuff() {
-	bool ok = true;
-
-	test_scanner_listener listener;
-	jsonxx::scanner s(listener);
-
-	s.scan("}\"\"{");
-
-	CHECK_EQUAL(listener.event_stream.str(), "}s(){");
-
-	return ok;
-}
-
-bool scanner_simple_string() {
-	bool ok = true;
-
-	test_scanner_listener listener;
-	jsonxx::scanner s(listener);
-
-	s.scan("\"I am a string\"");
-
-	CHECK_EQUAL(listener.event_stream.str(), "s(I am a string)");
-
-	return ok;
-}
-
-bool scanner_simple_string_and_stuff() {
-	bool ok = true;
-
-	test_scanner_listener listener;
-	jsonxx::scanner s(listener);
-
-	s.scan("}\"I am a string\"{");
-
-	CHECK_EQUAL(listener.event_stream.str(), "}s(I am a string){");
-
-	return ok;
-}
-
-bool scanner_two_simple_strings() {
-	bool ok = true;
-
-	test_scanner_listener listener;
-	jsonxx::scanner s(listener);
-
-	s.scan("\"a\",\"b\"");
-
-	CHECK_EQUAL(listener.event_stream.str(), "s(a),s(b)");
-
-	return ok;
-}
-
-bool scanner_string_escape_sequences() {
-	bool ok = true;
-
-	test_scanner_listener listener;
-	jsonxx::scanner s(listener);
-
-	s.scan("\"test\\nescape\\t\\\"sequences\\\"\"");
-
-	CHECK_EQUAL(listener.event_stream.str(), "s(test\nescape\t\"sequences\")");
-
+	for (size_t i = 0; i < (sizeof(test_cases) / sizeof(test_cases[0])); ++i) {
+		const test_case& c = test_cases[i];
+		ok &= test_scanner_with_input(c.test_name, c.lineno, c.input, c.output);
+	}
 	return ok;
 }
 
@@ -147,15 +78,7 @@ bool scanner_string_escape_sequences() {
 bool scanner_tests() {
     bool ok = true;
 
-    ok &= EXEC(scanner_simple_object);
-    ok &= EXEC(scanner_ignores_whitespace);
-    ok &= EXEC(scanner_all_simple_lexemes);
-    ok &= EXEC(scanner_empty_string);
-    ok &= EXEC(scanner_empty_string_and_stuff);
-    ok &= EXEC(scanner_simple_string);
-    ok &= EXEC(scanner_simple_string_and_stuff);
-    ok &= EXEC(scanner_two_simple_strings);
-    ok &= EXEC(scanner_string_escape_sequences);
+    ok &= EXEC(scanner_run_test_cases);
 
     return ok;
 }
