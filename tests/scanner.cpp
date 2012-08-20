@@ -19,7 +19,7 @@ struct test_scanner_listener : jsonxx::scanner_listener {
 	void colon() { event_stream << ':'; }
 
 	void number() { event_stream << 'n'; }
-	void string() { event_stream << 's'; }
+	void string(const std::string& s) { event_stream << "s(" << s << ")"; }
 	void boolean() { event_stream << 'b'; }
 	void null() { event_stream << '0'; }
 };
@@ -72,7 +72,7 @@ bool scanner_simple_string() {
 
 	s.scan("\"I am a string\"");
 
-	CHECK_EQUAL(listener.event_stream.str(), "s");
+	CHECK_EQUAL(listener.event_stream.str(), "s(I am a string)");
 
 	return ok;
 }
@@ -85,7 +85,20 @@ bool scanner_simple_string_and_stuff() {
 
 	s.scan("}\"I am a string\"{");
 
-	CHECK_EQUAL(listener.event_stream.str(), "}s{");
+	CHECK_EQUAL(listener.event_stream.str(), "}s(I am a string){");
+
+	return ok;
+}
+
+bool scanner_two_simple_strings() {
+	bool ok = true;
+
+	test_scanner_listener listener;
+	jsonxx::scanner s(listener);
+
+	s.scan("\"a\",\"b\"");
+
+	CHECK_EQUAL(listener.event_stream.str(), "s(a),s(b)");
 
 	return ok;
 }
@@ -100,6 +113,7 @@ bool scanner_tests() {
     ok &= EXEC(scanner_all_simple_lexemes);
     ok &= EXEC(scanner_simple_string);
     ok &= EXEC(scanner_simple_string_and_stuff);
+    ok &= EXEC(scanner_two_simple_strings);
 
     return ok;
 }

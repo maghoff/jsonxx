@@ -44,7 +44,8 @@ const char* scanner::in_string(const char* begin, const char* end) {
 		++position;
 
 		if (look == '"') {
-			listener.string();
+			listener.string(parsing_string.str());
+			parsing_string.str(std::string());
 			state = &scanner::root_level;
 		}
 	}

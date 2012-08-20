@@ -1,6 +1,8 @@
 #ifndef JSONXX_SCANNER_LISTENER_HPP
 #define JSONXX_SCANNER_LISTENER_HPP
 
+#include <string>
+
 #include "declspec.hpp"
 
 namespace jsonxx {
@@ -20,7 +22,7 @@ public:
 	virtual void colon() = 0;
 
 	virtual void number() = 0;
-	virtual void string() = 0;
+	virtual void string(const std::string&) = 0;
 	virtual void boolean() = 0;
 	virtual void null() = 0;
 
