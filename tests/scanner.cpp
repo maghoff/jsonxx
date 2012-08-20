@@ -64,6 +64,32 @@ bool scanner_all_simple_lexemes() {
 	return ok;
 }
 
+bool scanner_empty_string() {
+	bool ok = true;
+
+	test_scanner_listener listener;
+	jsonxx::scanner s(listener);
+
+	s.scan("\"\"");
+
+	CHECK_EQUAL(listener.event_stream.str(), "s()");
+
+	return ok;
+}
+
+bool scanner_empty_string_and_stuff() {
+	bool ok = true;
+
+	test_scanner_listener listener;
+	jsonxx::scanner s(listener);
+
+	s.scan("}\"\"{");
+
+	CHECK_EQUAL(listener.event_stream.str(), "}s(){");
+
+	return ok;
+}
+
 bool scanner_simple_string() {
 	bool ok = true;
 
@@ -103,6 +129,19 @@ bool scanner_two_simple_strings() {
 	return ok;
 }
 
+bool scanner_string_escape_sequences() {
+	bool ok = true;
+
+	test_scanner_listener listener;
+	jsonxx::scanner s(listener);
+
+	s.scan("\"test\\nescape\\t\\\"sequences\\\"\"");
+
+	CHECK_EQUAL(listener.event_stream.str(), "s(test\nescape\t\"sequences\")");
+
+	return ok;
+}
+
 }
 
 bool scanner_tests() {
@@ -111,9 +150,12 @@ bool scanner_tests() {
     ok &= EXEC(scanner_simple_object);
     ok &= EXEC(scanner_ignores_whitespace);
     ok &= EXEC(scanner_all_simple_lexemes);
+    ok &= EXEC(scanner_empty_string);
+    ok &= EXEC(scanner_empty_string_and_stuff);
     ok &= EXEC(scanner_simple_string);
     ok &= EXEC(scanner_simple_string_and_stuff);
     ok &= EXEC(scanner_two_simple_strings);
+    ok &= EXEC(scanner_string_escape_sequences);
 
     return ok;
 }

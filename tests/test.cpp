@@ -1,3 +1,4 @@
+#include <exception>
 #include "test_util.hpp"
 
 extern bool compact_writer_tests();
@@ -10,7 +11,8 @@ extern bool util_tests();
 extern bool validating_filter_tests();
 extern bool util_tests();
 
-int main() {
+int main()
+try {
     bool ok = true;
 
     ok &= compact_writer_tests();
@@ -24,4 +26,8 @@ int main() {
     ok &= util_tests();
 
     return ok ? 0 : 1;
+}
+catch (const std::exception& e) {
+    std::cerr << "Caught exception: " << e.what() << std::endl;
+    throw;
 }

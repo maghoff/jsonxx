@@ -19,8 +19,10 @@ class JSONXX_DECLSPEC scanner {
 
 	std::stringstream parsing_string;
 
+	const char* error_state(const char* begin, const char* end);
 	const char* root_level(const char* begin, const char* end);
 	const char* in_string(const char* begin, const char* end);
+	const char* string_escape_sequence(const char* begin, const char* end);
 
 public:
 	scanner(scanner_listener&);
