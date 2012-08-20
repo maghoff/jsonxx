@@ -64,6 +64,32 @@ bool scanner_all_simple_lexemes() {
 	return ok;
 }
 
+bool scanner_simple_string() {
+	bool ok = true;
+
+	test_scanner_listener listener;
+	jsonxx::scanner s(listener);
+
+	s.scan("\"I am a string\"");
+
+	CHECK_EQUAL(listener.event_stream.str(), "s");
+
+	return ok;
+}
+
+bool scanner_simple_string_and_stuff() {
+	bool ok = true;
+
+	test_scanner_listener listener;
+	jsonxx::scanner s(listener);
+
+	s.scan("}\"I am a string\"{");
+
+	CHECK_EQUAL(listener.event_stream.str(), "}s{");
+
+	return ok;
+}
+
 }
 
 bool scanner_tests() {
@@ -72,6 +98,8 @@ bool scanner_tests() {
     ok &= EXEC(scanner_simple_object);
     ok &= EXEC(scanner_ignores_whitespace);
     ok &= EXEC(scanner_all_simple_lexemes);
+    ok &= EXEC(scanner_simple_string);
+    ok &= EXEC(scanner_simple_string_and_stuff);
 
     return ok;
 }

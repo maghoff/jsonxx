@@ -6,16 +6,12 @@
 
 namespace jsonxx {
 
-namespace {
-
-bool needs_escaping(char c) {
+bool is_string_special_char(char c) {
     return
         ((0 <= c) && (c < 0x20)) ||
         (c == '\\') ||
         (c == '\"')
     ;
-}
-
 }
 
 encoding_error::encoding_error(const std::string& msg) :
@@ -29,7 +25,7 @@ void write_quoted_string(std::ostream& out, const std::string& str) {
     const char *begin = str.data(), *end = begin + str.size();
 
     for (const char* p = begin; p != end;) {
-        const char* e = std::find_if(p, end, &needs_escaping);
+        const char* e = std::find_if(p, end, &is_string_special_char);
         out.write(p, e - p);
         p = e;
         if (p != end) {

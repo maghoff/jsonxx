@@ -1,6 +1,7 @@
 #ifndef JSONXX_SCANNER_HPP
 #define JSONXX_SCANNER_HPP
 
+#include <sstream>
 #include <stdexcept>
 #include <string>
 
@@ -12,6 +13,14 @@ class scanner_listener;
 
 class JSONXX_DECLSPEC scanner {
 	scanner_listener& listener;
+
+	typedef const char* (scanner::*state_function)(const char* begin, const char* end);
+	state_function state;
+
+	std::stringstream parsing_string;
+
+	const char* root_level(const char* begin, const char* end);
+	const char* in_string(const char* begin, const char* end);
 
 public:
 	scanner(scanner_listener&);

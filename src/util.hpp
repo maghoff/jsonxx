@@ -20,6 +20,9 @@ public:
     encoding_error(const std::string&);
 };
 
+// true iff c is not a normal string character in JSON
+bool is_string_special_char(char c);
+
 // Writes the given string to the given ostream. Characters that should be
 // escaped in JSON strings are escaped. Quotes are added to the beginning and
 // end. If the given string is not representable in JSON, an encoding_error
