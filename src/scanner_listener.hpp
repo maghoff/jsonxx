@@ -23,7 +23,8 @@ public:
 
 	virtual void number() = 0;
 	virtual void string(const std::string&) = 0;
-	virtual void boolean() = 0;
+	virtual void bool_true() = 0;
+	virtual void bool_false() = 0;
 	virtual void null() = 0;
 
 	// or just one for terminal_value?

@@ -20,7 +20,8 @@ struct test_scanner_listener : jsonxx::scanner_listener {
 
 	void number() { event_stream << 'n'; }
 	void string(const std::string& s) { event_stream << "s(" << s << ")"; }
-	void boolean() { event_stream << 'b'; }
+	void bool_true() { event_stream << 't'; }
+	void bool_false() { event_stream << 'f'; }
 	void null() { event_stream << '0'; }
 };
 
@@ -85,6 +86,12 @@ test_case test_cases[] = {
 	CASE("Simple string and stuff", "}\"I am a string\"{", "}s(I am a string){"),
 	CASE("Two simple strings", "\"a\",\"b\"", "s(a),s(b)"),
 	CASE("String escape sequences", "\"test\\nescape\\t\\\"sequences\\\"\"", "s(test\nescape\t\"sequences\")"),
+	CASE("True", "true", "t"),
+	CASE("False", "false", "f"),
+	CASE("Null", "null", "0"),
+	CASE("True in context", "[true]", "[t]"),
+	CASE("False in context", "[false]", "[f]"),
+	CASE("Null in context", "[null]", "[0]"),
 };
 
 bool scanner_run_test_cases_big_chunk() {
@@ -196,6 +203,23 @@ bool scanner_illegal_escape_sequence_in_string() {
 	return ok;
 }
 
+bool scanner_start_literal_but_fail() {
+	bool ok = true;
+
+	test_scanner_listener listener;
+	jsonxx::scanner s(listener);
+
+	try {
+		s.scan("truse");
+	}
+	catch (const jsonxx::scanner::syntax_error&) {
+		return true;
+	}
+
+	FAIL("Missing expected exception: syntax_error");
+	return ok;
+}
+
 }
 
 bool scanner_tests() {
@@ -209,6 +233,7 @@ bool scanner_tests() {
     ok &= EXEC(scanner_syntax_error_stops_scanning_persistently);
     ok &= EXEC(scanner_illegal_char_in_string);
     ok &= EXEC(scanner_illegal_escape_sequence_in_string);
+    ok &= EXEC(scanner_start_literal_but_fail);
 
     return ok;
 }

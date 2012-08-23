@@ -19,10 +19,18 @@ class JSONXX_DECLSPEC scanner {
 
 	std::stringstream parsing_string;
 
+	typedef void (scanner_listener::*literal_completion)();
+	const char* scanning_literal_pos;
+	const char* scanning_literal_end;
+	literal_completion scanning_literal_completion;
+
+	void scan_literal(const char* begin, const char* end, literal_completion callback);
+
 	const char* error_state(const char* begin, const char* end);
 	const char* root_level(const char* begin, const char* end);
 	const char* in_string(const char* begin, const char* end);
 	const char* string_escape_sequence(const char* begin, const char* end);
+	const char* literal(const char* begin, const char* end);
 
 public:
 	scanner(scanner_listener&);
