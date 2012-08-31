@@ -17,7 +17,7 @@ class JSONXX_DECLSPEC scanner {
 	typedef const char* (scanner::*state_function)(const char* begin, const char* end);
 	state_function state;
 
-	std::stringstream parsing_string;
+	std::stringstream token_buffer;
 
 	typedef void (scanner_listener::*literal_completion)();
 	const char* scanning_literal_pos;
@@ -31,6 +31,17 @@ class JSONXX_DECLSPEC scanner {
 	const char* in_string(const char* begin, const char* end);
 	const char* string_escape_sequence(const char* begin, const char* end);
 	const char* literal(const char* begin, const char* end);
+
+	const char* number_start(const char* begin, const char* end);
+	const char* number_integral_part(const char* begin, const char* end);
+	const char* number_after_zero_integral_part(const char* begin, const char* end);
+	const char* number_after_integral_part(const char* begin, const char* end);
+	const char* number_decimal_part(const char* begin, const char* end);
+	const char* number_in_decimal_part(const char* begin, const char* end);
+	const char* number_after_decimal_part(const char* begin, const char* end);
+	const char* number_exponent_maybe_prefix(const char* begin, const char* end);
+	const char* number_exponent_number(const char* begin, const char* end);
+	const char* number_in_exponent_number(const char* begin, const char* end);
 
 public:
 	scanner(scanner_listener&);

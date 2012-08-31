@@ -50,8 +50,17 @@ const char* scanner::root_level(const char* begin, const char* end) {
 	else CHECK_LITERAL(false_literal, bool_false)
 	else CHECK_LITERAL(null_literal, null)
 	else if ((look == ' ') || (look == '\t') || (look == '\n') || (look == '\r')) { /* ignore whitespace */ }
-	else if (look == '\"') {
-		parsing_string.str(std::string());
+	else if ((look == '-') || ((look >= '0') && (look <= '9'))) {
+		token_buffer.str(std::string());
+		state = &scanner::number_start;
+		if (look == '-') {
+			token_buffer << look;
+			return begin + 1;
+		} else {
+			return begin;
+		}
+	} else if (look == '\"') {
+		token_buffer.str(std::string());
 		state = &scanner::in_string;
 	} else {
 		state = &scanner::error_state;
@@ -63,7 +72,7 @@ const char* scanner::root_level(const char* begin, const char* end) {
 
 const char* scanner::in_string(const char* begin, const char* end) {
 	const char* next = std::find_if(begin, end, &is_string_special_char);
-	parsing_string.write(begin, next - begin);
+	token_buffer.write(begin, next - begin);
 
 	const char* position = next;
 	if (position != end) {
@@ -71,7 +80,7 @@ const char* scanner::in_string(const char* begin, const char* end) {
 		++position;
 
 		if (look == '"') {
-			listener.string(parsing_string.str());
+			listener.string(token_buffer.str());
 			state = &scanner::root_level;
 		} else if (look == '\\') {
 			state = &scanner::string_escape_sequence;
@@ -90,14 +99,14 @@ const char* scanner::string_escape_sequence(const char* begin, const char* end) 
 
 	state = &scanner::in_string;
 
-	if (look == '"') parsing_string << '"';
-	else if (look == '\\') parsing_string << '\\';
-	else if (look == '/') parsing_string << '/';
-	else if (look == 'b') parsing_string << '\b';
-	else if (look == 'f') parsing_string << '\f';
-	else if (look == 'n') parsing_string << '\n';
-	else if (look == 'r') parsing_string << '\r';
-	else if (look == 't') parsing_string << '\t';
+	if (look == '"') token_buffer << '"';
+	else if (look == '\\') token_buffer << '\\';
+	else if (look == '/') token_buffer << '/';
+	else if (look == 'b') token_buffer << '\b';
+	else if (look == 'f') token_buffer << '\f';
+	else if (look == 'n') token_buffer << '\n';
+	else if (look == 'r') token_buffer << '\r';
+	else if (look == 't') token_buffer << '\t';
 	else if (look == 'u') {
 		throw std::logic_error("Scanning of unicode escape sequences not implemented");
 		//state = &scanner::unicode_escape_sequence;
@@ -122,6 +131,138 @@ const char* scanner::literal(const char* begin, const char* end) {
 
 	if (scanning_literal_pos == scanning_literal_end) {
 		(listener.*scanning_literal_completion)();
+		state = &scanner::root_level;
+	}
+
+	return pos;
+}
+
+const char* scanner::number_start(const char* begin, const char* end) {
+	char look = *begin;
+	token_buffer << look;
+
+	if (look == '0') state = &scanner::number_after_zero_integral_part;
+	else if ((look >= '1') && (look <= '9')) state = &scanner::number_integral_part;
+	else {
+		state = &scanner::error_state;
+		throw syntax_error(std::string("Unexpected byte in number: ") + look + " Expected digit");
+	}
+
+	return begin + 1;
+}
+
+const char* scanner::number_integral_part(const char* begin, const char* end) {
+	const char* pos = begin;
+
+	while ((pos != end) && ((*pos) >= '0') && ((*pos) <= '9')) ++pos;
+
+	token_buffer.write(begin, pos - begin);
+
+	if (pos != end) state = &scanner::number_after_integral_part;
+
+	return pos;
+}
+
+const char* scanner::number_after_zero_integral_part(const char* begin, const char* end) {
+	char look = *begin;
+
+	if ((look >= '0') && (look <= '9')) {
+		state = &scanner::error_state;
+		throw syntax_error("Numbers cannot be prefixed by zero");
+	} else {
+		state = &scanner::number_after_integral_part;
+	}
+
+	return begin;
+}
+
+const char* scanner::number_after_integral_part(const char* begin, const char* end) {
+	char look = *begin;
+
+	if (look == '.') {
+		token_buffer << look;
+		state = &scanner::number_decimal_part;
+		return begin + 1;
+	} else {
+		state = &scanner::number_after_decimal_part;
+		return begin;
+	}
+}
+
+const char* scanner::number_decimal_part(const char* begin, const char* end) {
+	char look = *begin;
+
+	if ((look >= '0') && (look <= '9')) {
+		state = &scanner::number_in_decimal_part;
+	} else {
+		state = &scanner::error_state;
+		throw syntax_error(std::string("Expected digits after decimal point. Got ") + look);
+	}
+
+	return begin;
+}
+
+const char* scanner::number_in_decimal_part(const char* begin, const char* end) {
+	const char* pos = begin;
+
+	while ((pos != end) && ((*pos) >= '0') && ((*pos) <= '9')) ++pos;
+
+	token_buffer.write(begin, pos - begin);
+
+	if (pos != end) state = &scanner::number_after_decimal_part;
+
+	return pos;
+}
+
+const char* scanner::number_after_decimal_part(const char* begin, const char* end) {
+	char look = *begin;
+
+	if ((look == 'e') || (look == 'E')) {
+		token_buffer << look;
+		state = &scanner::number_exponent_maybe_prefix;
+		return begin + 1;
+	} else {
+		listener.number(token_buffer.str());
+		state = &scanner::root_level;
+		return begin;
+	}
+}
+
+const char* scanner::number_exponent_maybe_prefix(const char* begin, const char* end) {
+	char look = *begin;
+
+	state = &scanner::number_exponent_number;
+
+	if ((look == '-') || (look == '+')) {
+		token_buffer << look;
+		return begin + 1;
+	}
+
+	return begin;
+}
+
+const char* scanner::number_exponent_number(const char* begin, const char* end) {
+	char look = *begin;
+
+	if ((look >= '0') && (look <= '9')) {
+		state = &scanner::number_in_exponent_number;
+	} else {
+		state = &scanner::error_state;
+		throw syntax_error(std::string("Expected digits after exponent marker. Got ") + look);
+	}
+
+	return begin;
+}
+
+const char* scanner::number_in_exponent_number(const char* begin, const char* end) {
+	const char* pos = begin;
+
+	while ((pos != end) && ((*pos) >= '0') && ((*pos) <= '9')) ++pos;
+
+	token_buffer.write(begin, pos - begin);
+
+	if (pos != end) {
+		listener.number(token_buffer.str());
 		state = &scanner::root_level;
 	}
 

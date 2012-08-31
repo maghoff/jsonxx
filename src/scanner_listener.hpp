@@ -21,13 +21,11 @@ public:
 	virtual void comma() = 0;
 	virtual void colon() = 0;
 
-	virtual void number() = 0;
+	virtual void number(const std::string&) = 0;
 	virtual void string(const std::string&) = 0;
 	virtual void bool_true() = 0;
 	virtual void bool_false() = 0;
 	virtual void null() = 0;
-
-	// or just one for terminal_value?
 };
 
 } // namespace jsonxx
