@@ -12,6 +12,7 @@ def build(bld):
         'parser.cpp',
         'scanner.cpp',
         'scanner_listener.cpp',
+        'scanner_listener_stack.cpp',
         'serializer.cpp',
         'util.cpp',
         'validating_filter.cpp',
