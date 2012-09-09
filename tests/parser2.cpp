@@ -206,7 +206,7 @@ bool parser2_tests() {
     ok &= EXEC(utf8_string);
 //    ok &= EXEC(string_with_unicode_escapes);
     ok &= EXEC(incremental);
-//    ok &= EXEC(array);
+    ok &= EXEC(array);
 
     return ok;
 }
