@@ -3,6 +3,7 @@ def build(bld):
         'compact_writer.cpp',
         'indenting_writer.cpp',
         'parser.cpp',
+        'parser2.cpp',
         'raii.cpp',
         'scanner.cpp',
         'serializing.cpp',

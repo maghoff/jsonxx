@@ -4,6 +4,7 @@
 extern bool compact_writer_tests();
 extern bool indenting_writer_tests();
 extern bool parser_tests();
+extern bool parser2_tests();
 extern bool raii_tests();
 extern bool scanner_tests();
 extern bool serializing_tests();
@@ -18,6 +19,7 @@ try {
     ok &= compact_writer_tests();
     ok &= indenting_writer_tests();
     ok &= parser_tests();
+    ok &= parser2_tests();
     ok &= raii_tests();
     ok &= scanner_tests();
     ok &= serializing_tests();
