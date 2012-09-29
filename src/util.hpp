@@ -4,6 +4,7 @@
 #include <ostream>
 #include <stdexcept>
 #include <string>
+#include <stdint.h>
 
 #include "declspec.hpp"
 
@@ -28,6 +29,8 @@ bool is_string_special_char(char c);
 // end. If the given string is not representable in JSON, an encoding_error
 // exception is thrown.
 JSONXX_DECLSPEC void write_quoted_string(std::ostream&, const std::string&);
+
+JSONXX_DECLSPEC void write_code_point_as_utf8(std::ostream&, uint32_t);
 
 } // namespace jsonxx
 
