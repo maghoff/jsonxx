@@ -11,18 +11,6 @@ namespace {
 
 namespace listener {
 
-struct expect_value;
-
-struct expect_start_object;
-struct expect_key_or_end_object;
-struct expect_key;
-struct expect_colon;
-struct expect_comma_or_end_object;
-
-struct expect_start_array;
-struct expect_value_or_end_array;
-struct expect_comma_or_end_array;
-
 struct parser2_state {
 	scanner_listener_stack& stack;
 	object_listener& listener;
