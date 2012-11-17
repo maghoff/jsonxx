@@ -110,6 +110,7 @@ const char* scanner::string_escape_sequence(const char* begin, const char* end) 
 	else if (look == 'u') {
 		escape_nibbles_left = 4;
 		current_escape_value = 0;
+		lead_surrogate = 0;
 		state = &scanner::unicode_escape_sequence;
 	} else {
 		state = &scanner::error_state;
@@ -139,29 +140,75 @@ const char* scanner::unicode_escape_sequence(const char* begin, const char* end)
 	escape_nibbles_left--;
 
 	if (escape_nibbles_left == 0) {
-		bool is_surrogate = (current_escape_value & 0xD800) == 0xD800;
+		bool expect_trail_surrogate = lead_surrogate != 0;
+
 		bool is_lead_surrogate = (current_escape_value & 0xFC00) == 0xD800;
 		bool is_trail_surrogate = (current_escape_value & 0xFC00) == 0xDC00;
 
-		assert(is_surrogate == (is_lead_surrogate || is_trail_surrogate));
-		assert(is_surrogate == (is_lead_surrogate != is_trail_surrogate));
+		if (expect_trail_surrogate != is_trail_surrogate) {
+			state = &scanner::error_state;
+			std::stringstream error_message;
 
-		if (!is_surrogate) {
-			write_code_point_as_utf8(token_buffer, current_escape_value);
-		} else if (is_lead_surrogate) {
+			if (expect_trail_surrogate) {
+				error_message <<
+					"Expected UTF-16 trail surrogate after UTF-16 lead surrogate \\u" << std::hex << lead_surrogate << ". "
+					"Found instead: \\u" << std::hex << current_escape_value;
+			} else {
+				error_message << "Unexpected UTF-16 trail surrogate: \\u" << std::hex << current_escape_value;
+			}
+
+			throw syntax_error(error_message.str());
+		}
+
+		if (is_lead_surrogate) {
 			lead_surrogate = current_escape_value;
+			state = &scanner::expect_trail_surrogate_escape_backslash;
 		} else if (is_trail_surrogate) {
 			uint32_t low_bits = current_escape_value & 0x03FF;
 			uint32_t high_bits = lead_surrogate & 0x03FF;
-			uint32_t value = low_bits + (high_bits << 10) + 0x010000;
-			write_code_point_as_utf8(token_buffer, value);
-		} else {
-			assert(false);
+			uint32_t codepoint = low_bits + (high_bits << 10) + 0x010000;
+			write_code_point_as_utf8(token_buffer, codepoint);
+			state = &scanner::in_string;
+	} else {
+			write_code_point_as_utf8(token_buffer, current_escape_value);
+			state = &scanner::in_string;
 		}
-
-		state = &scanner::in_string;
 	}
 
+	return begin + 1;
+}
+
+const char* scanner::expect_trail_surrogate_escape_backslash(const char* begin, const char* end) {
+	char look = *begin;
+
+	if (look != '\\') {
+		state = &scanner::error_state;
+		std::stringstream error_message;
+		error_message <<
+			"Expected UTF-16 trail surrogate after UTF-16 lead surrogate \\u" << std::hex << lead_surrogate << ". "
+			"Found instead: " << look;
+		throw syntax_error(error_message.str());
+	}
+
+	state = &scanner::expect_trail_surrogate_escape_u;
+	return begin + 1;
+}
+
+const char* scanner::expect_trail_surrogate_escape_u(const char* begin, const char* end) {
+	char look = *begin;
+
+	if (look != 'u') {
+		state = &scanner::error_state;
+		std::stringstream error_message;
+		error_message <<
+			"Expected UTF-16 trail surrogate after UTF-16 lead surrogate \\u" << std::hex << lead_surrogate << ". "
+			"Found instead: \\" << look;
+		throw syntax_error(error_message.str());
+	}
+
+	current_escape_value = 0;
+	escape_nibbles_left = 4;
+	state = &scanner::unicode_escape_sequence;
 	return begin + 1;
 }
 

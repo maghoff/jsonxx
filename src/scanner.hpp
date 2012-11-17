@@ -36,6 +36,8 @@ class JSONXX_DECLSPEC scanner {
 	const char* in_string(const char* begin, const char* end);
 	const char* string_escape_sequence(const char* begin, const char* end);
 	const char* unicode_escape_sequence(const char* begin, const char* end);
+	const char* expect_trail_surrogate_escape_backslash(const char* begin, const char* end);
+	const char* expect_trail_surrogate_escape_u(const char* begin, const char* end);
 	const char* literal(const char* begin, const char* end);
 
 	const char* number_start(const char* begin, const char* end);

@@ -29,6 +29,8 @@ test_case test_cases[] = {
 	CASE("Invalid surrogate pair 1", "\"\\uD83D \\uDCA9\"", "X"),
 	CASE("Invalid surrogate pair 2", "\"\\uDCA9\"", "X"),
 	CASE("Invalid surrogate pair 3", "\"\\uD83D\\u20AC\"", "X"),
+	CASE("Invalid surrogate pair 4", "\"\\uD83D\\t\"", "X"),
+	CASE("Invalid surrogate pair 5", "\"\\uD83D\\ ...\"", "X"),
 	CASE("True", "true", "t"),
 	CASE("False", "false", "f"),
 	CASE("Null", "null", "0"),
