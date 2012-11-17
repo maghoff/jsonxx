@@ -4,6 +4,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <stdint.h>
 
 #include "declspec.hpp"
 
@@ -19,6 +20,10 @@ class JSONXX_DECLSPEC scanner {
 
 	std::stringstream token_buffer;
 
+	int escape_nibbles_left;
+	uint16_t current_escape_value;
+	uint16_t lead_surrogate;
+
 	typedef void (scanner_listener::*literal_completion)();
 	const char* scanning_literal_pos;
 	const char* scanning_literal_end;
@@ -30,6 +35,7 @@ class JSONXX_DECLSPEC scanner {
 	const char* root_level(const char* begin, const char* end);
 	const char* in_string(const char* begin, const char* end);
 	const char* string_escape_sequence(const char* begin, const char* end);
+	const char* unicode_escape_sequence(const char* begin, const char* end);
 	const char* literal(const char* begin, const char* end);
 
 	const char* number_start(const char* begin, const char* end);

@@ -108,11 +108,58 @@ const char* scanner::string_escape_sequence(const char* begin, const char* end) 
 	else if (look == 'r') token_buffer << '\r';
 	else if (look == 't') token_buffer << '\t';
 	else if (look == 'u') {
-		throw std::logic_error("Scanning of unicode escape sequences not implemented");
-		//state = &scanner::unicode_escape_sequence;
+		escape_nibbles_left = 4;
+		current_escape_value = 0;
+		state = &scanner::unicode_escape_sequence;
 	} else {
 		state = &scanner::error_state;
 		throw syntax_error(std::string("Invalid escape sequence in string: \\") + look);
+	}
+
+	return begin + 1;
+}
+
+const char* scanner::unicode_escape_sequence(const char* begin, const char* end) {
+	char look = *begin;
+
+	int val;
+
+	if (look >= 'a' && look <= 'f') {
+		val = look - 'a' + 10;
+	} else if (look >= 'A' && look <= 'F') {
+		val = look - 'A' + 10;
+	} else if (look >= '0' && look <= '9') {
+		val = look - '0';
+	} else {
+		state = &scanner::error_state;
+		throw syntax_error(std::string("Invalid character in unicode escape sequence: ") + look);
+	}
+
+	current_escape_value = (current_escape_value << 4) + val;
+	escape_nibbles_left--;
+
+	if (escape_nibbles_left == 0) {
+		bool is_surrogate = (current_escape_value & 0xD800) == 0xD800;
+		bool is_lead_surrogate = (current_escape_value & 0xFC00) == 0xD800;
+		bool is_trail_surrogate = (current_escape_value & 0xFC00) == 0xDC00;
+
+		assert(is_surrogate == (is_lead_surrogate || is_trail_surrogate));
+		assert(is_surrogate == (is_lead_surrogate != is_trail_surrogate));
+
+		if (!is_surrogate) {
+			write_code_point_as_utf8(token_buffer, current_escape_value);
+		} else if (is_lead_surrogate) {
+			lead_surrogate = current_escape_value;
+		} else if (is_trail_surrogate) {
+			uint32_t low_bits = current_escape_value & 0x03FF;
+			uint32_t high_bits = lead_surrogate & 0x03FF;
+			uint32_t value = low_bits + (high_bits << 10) + 0x010000;
+			write_code_point_as_utf8(token_buffer, value);
+		} else {
+			assert(false);
+		}
+
+		state = &scanner::in_string;
 	}
 
 	return begin + 1;
