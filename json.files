@@ -51,3 +51,5 @@ tests/util.hpp
 tests/validating_filter.cpp
 tests/wscript
 wscript
+src/parser2_state.hpp
+src/parser2_state.cpp

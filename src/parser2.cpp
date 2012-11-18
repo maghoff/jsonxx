@@ -4,56 +4,13 @@
 #include "object_listener.hpp"
 #include "util.hpp"
 #include "parser2.hpp"
+#include "parser2_state.hpp"
 
 namespace jsonxx {
 
 namespace {
 
 namespace listener {
-
-struct parser2_state {
-	scanner_listener_stack& stack;
-	object_listener& listener;
-
-	scanner_listener& expect_value;
-
-	scanner_listener& expect_start_object;
-	scanner_listener& expect_key_or_end_object;
-	scanner_listener& expect_key;
-	scanner_listener& expect_colon;
-	scanner_listener& expect_comma_or_end_object;
-
-	scanner_listener& expect_start_array;
-	scanner_listener& expect_value_or_end_array;
-	scanner_listener& expect_comma_or_end_array;
-
-	parser2_state(
-		scanner_listener_stack& stack_,
-		object_listener& listener_,
-		scanner_listener& expect_value_,
-		scanner_listener& expect_start_object_,
-		scanner_listener& expect_key_or_end_object_,
-		scanner_listener& expect_key_,
-		scanner_listener& expect_colon_,
-		scanner_listener& expect_comma_or_end_object_,
-		scanner_listener& expect_start_array_,
-		scanner_listener& expect_value_or_end_array_,
-		scanner_listener& expect_comma_or_end_array_
-	) :
-		stack(stack_),
-		listener(listener_),
-		expect_value(expect_value_),
-		expect_start_object(expect_start_object_),
-		expect_key_or_end_object(expect_key_or_end_object_),
-		expect_key(expect_key_),
-		expect_colon(expect_colon_),
-		expect_comma_or_end_object(expect_comma_or_end_object_),
-		expect_start_array(expect_start_array_),
-		expect_value_or_end_array(expect_value_or_end_array_),
-		expect_comma_or_end_array(expect_comma_or_end_array_)
-	{
-	}
-};
 
 class parse_error : public std::runtime_error {
 	std::string expected_description, found_description;
@@ -146,7 +103,7 @@ struct expect_start_object : error_fallback {
 	void start_object() {
 		s.listener.start_object();
 		s.stack.pop();
-		s.stack.push(&s.expect_key_or_end_object);
+		s.stack.push(s.expect_key_or_end_object);
 	}
 };
 
@@ -163,9 +120,9 @@ struct expect_key_or_end_object : error_fallback {
 	void string(const std::string& key) {
 		s.listener.key(key);
 		s.stack.pop();
-		s.stack.push(&s.expect_comma_or_end_object);
-		s.stack.push(&s.expect_value);
-		s.stack.push(&s.expect_colon);
+		s.stack.push(s.expect_comma_or_end_object);
+		s.stack.push(s.expect_value);
+		s.stack.push(s.expect_colon);
 	}
 };
 
@@ -177,9 +134,9 @@ struct expect_key : error_fallback {
 	void string(const std::string& key) {
 		s.listener.key(key);
 		s.stack.pop();
-		s.stack.push(&s.expect_comma_or_end_object);
-		s.stack.push(&s.expect_value);
-		s.stack.push(&s.expect_colon);
+		s.stack.push(s.expect_comma_or_end_object);
+		s.stack.push(s.expect_value);
+		s.stack.push(s.expect_colon);
 	}
 };
 
@@ -205,7 +162,7 @@ struct expect_comma_or_end_object : error_fallback {
 
 	void comma() {
 		s.stack.pop();
-		s.stack.push(&s.expect_key);
+		s.stack.push(s.expect_key);
 	}
 };
 
@@ -217,7 +174,7 @@ struct expect_start_array : error_fallback {
 	void start_array() {
 		s.listener.start_array();
 		s.stack.pop();
-		s.stack.push(&s.expect_value_or_end_array);
+		s.stack.push(s.expect_value_or_end_array);
 	}
 };
 
@@ -242,8 +199,8 @@ struct expect_value_or_end_array : error_fallback {
 private:
 	void fall_back_to_value() {
 		s.stack.pop();
-		s.stack.push(&s.expect_comma_or_end_array);
-		s.stack.push(&s.expect_value);
+		s.stack.push(s.expect_comma_or_end_array);
+		s.stack.push(s.expect_value);
 	}
 };
 
@@ -259,8 +216,8 @@ struct expect_comma_or_end_array : error_fallback {
 
 	void comma() {
 		s.stack.pop();
-		s.stack.push(&s.expect_comma_or_end_array);
-		s.stack.push(&s.expect_value);
+		s.stack.push(s.expect_comma_or_end_array);
+		s.stack.push(s.expect_value);
 	}
 };
 
@@ -271,13 +228,13 @@ struct expect_value : error_fallback {
 
 	void start_object() {
 		s.stack.pop();
-		s.stack.push(&s.expect_start_object);
+		s.stack.push(s.expect_start_object);
 		s.stack.start_object();
 	}
 
 	void start_array() {
 		s.stack.pop();
-		s.stack.push(&s.expect_start_array);
+		s.stack.push(s.expect_start_array);
 		s.stack.start_array();
 	}
 
@@ -310,6 +267,47 @@ struct expect_value : error_fallback {
 	}
 };
 
+struct expect_value_stream : error_fallback {
+	parser2_state& s;
+
+	expect_value_stream(parser2_state& s_) : error_fallback("value"), s(s_) { }
+
+	void start_object() {
+		s.stack.push(s.expect_value);
+		s.stack.start_object();
+	}
+
+	void start_array() {
+		s.stack.push(s.expect_value);
+		s.stack.start_array();
+	}
+
+	void number(const std::string& value) {
+		s.stack.push(s.expect_value);
+		s.stack.number(value);
+	}
+
+	void string(const std::string& value) {
+		s.stack.push(s.expect_value);
+		s.stack.string(value);
+	}
+
+	void bool_true() {
+		s.stack.push(s.expect_value);
+		s.stack.bool_true();
+	}
+
+	void bool_false() {
+		s.stack.push(s.expect_value);
+		s.stack.bool_false();
+	}
+
+	void null() {
+		s.stack.push(s.expect_value);
+		s.stack.null();
+	}
+};
+
 }
 
 }
@@ -322,6 +320,8 @@ struct parser2::impl {
 
 	listener::expect_value expect_value;
 
+	listener::expect_value_stream expect_value_stream;
+
 	listener::expect_start_object expect_start_object;
 	listener::expect_key_or_end_object expect_key_or_end_object;
 	listener::expect_key expect_key;
@@ -332,12 +332,13 @@ struct parser2::impl {
 	listener::expect_value_or_end_array expect_value_or_end_array;
 	listener::expect_comma_or_end_array expect_comma_or_end_array;
 
-	listener::parser2_state state;
+	parser2_state state;
 
 	impl(object_listener& listener_) :
 		listener(listener_),
 		error_state("EOF"),
 		expect_value(state),
+		expect_value_stream(state),
 		expect_start_object(state),
 		expect_key_or_end_object(state),
 		expect_key(state),
@@ -349,26 +350,27 @@ struct parser2::impl {
 		state(
 			stack,
 			listener,
-			expect_value,
-			expect_start_object,
-			expect_key_or_end_object,
-			expect_key,
-			expect_colon,
-			expect_comma_or_end_object,
-			expect_start_array,
-			expect_value_or_end_array,
-			expect_comma_or_end_array
+			&expect_value,
+			&expect_value_stream,
+			&expect_start_object,
+			&expect_key_or_end_object,
+			&expect_key,
+			&expect_colon,
+			&expect_comma_or_end_object,
+			&expect_start_array,
+			&expect_value_or_end_array,
+			&expect_comma_or_end_array
 		)
 	{
 	}
 };
 
 
-parser2::parser2(object_listener& listener_) {
+parser2::parser2(object_listener& listener_, scanner_listener* parser2_state::*initial_state) {
 	d = new impl(listener_);
 	try {
 		d->stack.push(&d->error_state);
-		d->stack.push(&d->expect_value);
+		d->stack.push(d->state.*initial_state);
 	}
 	catch (...) {
 		delete d;

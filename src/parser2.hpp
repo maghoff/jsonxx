@@ -1,6 +1,8 @@
 #ifndef JSONXX_PARSER2_HPP
 #define JSONXX_PARSER2_HPP
 
+#include "parser2_state.hpp"
+
 #include "declspec.hpp"
 
 namespace jsonxx {
@@ -10,7 +12,7 @@ class scanner_listener;
 
 class JSONXX_DECLSPEC parser2 {
 public:
-	parser2(object_listener&);
+	parser2(object_listener&, scanner_listener* parser2_state::*initial_state = &parser2_state::expect_value);
 	~parser2();
 
 	struct impl;
