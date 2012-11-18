@@ -41,3 +41,5 @@ src/serializer.hpp
 src/serializer.cpp
 src/type_information.hpp
 src/documentation.md
+src/tee_object_listener.cpp
+src/tee_object_listener.hpp
