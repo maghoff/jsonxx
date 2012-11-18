@@ -29,7 +29,6 @@ class gcc_configurator:
     def release_mode(env):
         env.append_unique('CXXDEFINES', 'NDEBUG')
         env.append_unique('CCDEFINES', 'NDEBUG')
-        env.append_unique('LINKFLAGS', '-s')
 
     @staticmethod
     def optimize(env):
