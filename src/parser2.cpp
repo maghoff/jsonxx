@@ -366,8 +366,14 @@ struct parser2::impl {
 
 parser2::parser2(object_listener& listener_) {
 	d = new impl(listener_);
-	d->stack.push(&d->error_state);
-	d->stack.push(&d->expect_value);
+	try {
+		d->stack.push(&d->error_state);
+		d->stack.push(&d->expect_value);
+	}
+	catch (...) {
+		delete d;
+		throw;
+	}
 }
 
 parser2::~parser2() {
