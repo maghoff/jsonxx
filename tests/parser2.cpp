@@ -8,6 +8,7 @@
 
 namespace {
 
+JSONXX_DEPRECATED("Uses deprecated functionality parser2::lol_get_scanner_lisener")
 std::string roundtrip(const std::string& in) {
     std::stringstream ss;
     try {
@@ -23,6 +24,7 @@ std::string roundtrip(const std::string& in) {
     return ss.str();
 }
 
+JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool empty() {
     bool ok = true;
 
@@ -32,6 +34,7 @@ bool empty() {
     return ok;
 }
 
+JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool key_int() {
     bool ok = true;
 
@@ -41,6 +44,7 @@ bool key_int() {
     return ok;
 }
 
+JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool key_float() {
     bool ok = true;
 
@@ -50,6 +54,7 @@ bool key_float() {
     return ok;
 }
 
+JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool key_null() {
     bool ok = true;
 
@@ -59,6 +64,7 @@ bool key_null() {
     return ok;
 }
 
+JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool boolean_true() {
     bool ok = true;
 
@@ -68,6 +74,7 @@ bool boolean_true() {
     return ok;
 }
 
+JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool boolean_false() {
     bool ok = true;
 
@@ -77,6 +84,7 @@ bool boolean_false() {
     return ok;
 }
 
+JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool object_several_members() {
     bool ok = true;
 
@@ -86,6 +94,7 @@ bool object_several_members() {
     return ok;
 }
 
+JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool object_nested() {
     bool ok = true;
 
@@ -95,6 +104,7 @@ bool object_nested() {
     return ok;
 }
 
+JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool simple_string() {
     bool ok = true;
 
@@ -104,6 +114,7 @@ bool simple_string() {
     return ok;
 }
 
+JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool string_with_escapes() {
     bool ok = true;
 
@@ -121,6 +132,7 @@ bool string_with_escapes() {
     return ok;
 }
 
+JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool utf8_string() {
     bool ok = true;
 
@@ -130,6 +142,7 @@ bool utf8_string() {
     return ok;
 }
 
+JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool string_with_unicode_escapes() {
     bool ok = true;
 
@@ -139,6 +152,7 @@ bool string_with_unicode_escapes() {
     return ok;
 }
 
+JSONXX_DEPRECATED("Depends on deprecated parser2::lol_get_scanner_listener")
 bool incremental() {
     bool ok = true;
 
@@ -179,6 +193,7 @@ bool incremental() {
     return ok;
 }
 
+JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool array() {
     bool ok = true;
 
@@ -190,6 +205,7 @@ bool array() {
 
 }
 
+JSONXX_DEPRECATED("Indirectly depends on deprecated roundtrip")
 bool parser2_tests() {
     bool ok = true;
 

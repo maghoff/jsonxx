@@ -15,6 +15,7 @@ public:
 
 	struct impl;
 
+	JSONXX_DEPRECATED("Temporary escape hatch. Will disappear")
 	scanner_listener& lol_get_scanner_listener();
 
 	bool is_done() const;
