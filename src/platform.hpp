@@ -31,7 +31,7 @@
 #define JSONXX_IMPORT_DECLSPEC
 #define JSONXX_EXPORT_DECLSPEC
 
-#if JSONXX_GCC_VERSION >= 405000
+#if JSONXX_GCC_VERSION >= 40500
 #define JSONXX_DEPRECATED(msg) __attribute__((deprecated(msg)))
 #else
 #define JSONXX_DEPRECATED(msg) __attribute__((deprecated))
