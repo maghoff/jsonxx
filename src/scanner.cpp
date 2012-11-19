@@ -1,4 +1,5 @@
 #include <cassert>
+#include <algorithm>
 #include <sstream>
 #include <stdexcept>
 #include "scanner_listener.hpp"
