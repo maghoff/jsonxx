@@ -10,7 +10,7 @@ namespace jsonxx {
 
 class JSONXX_DECLSPEC scanner_listener_stack : public scanner_listener {
 	typedef std::stack<scanner_listener*> underlying_stack;
-	std::stack<scanner_listener*> stack;
+	underlying_stack stack;
 
 public:
 	scanner_listener_stack();
