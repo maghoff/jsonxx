@@ -23,8 +23,6 @@ struct JSONXX_DECLSPEC parser2_state {
 	scanner_listener* expect_comma_or_end_object;
 
 	scanner_listener* expect_start_array;
-	scanner_listener* expect_value_or_end_array;
-	scanner_listener* expect_comma_or_end_array;
 
 	parser2_state(
 		scanner_listener_stack& stack_,
@@ -36,9 +34,7 @@ struct JSONXX_DECLSPEC parser2_state {
 		scanner_listener* expect_key_,
 		scanner_listener* expect_colon_,
 		scanner_listener* expect_comma_or_end_object_,
-		scanner_listener* expect_start_array_,
-		scanner_listener* expect_value_or_end_array_,
-		scanner_listener* expect_comma_or_end_array_
+		scanner_listener* expect_start_array_
 	) :
 		stack(stack_),
 		listener(listener_),
@@ -49,9 +45,7 @@ struct JSONXX_DECLSPEC parser2_state {
 		expect_key(expect_key_),
 		expect_colon(expect_colon_),
 		expect_comma_or_end_object(expect_comma_or_end_object_),
-		expect_start_array(expect_start_array_),
-		expect_value_or_end_array(expect_value_or_end_array_),
-		expect_comma_or_end_array(expect_comma_or_end_array_)
+		expect_start_array(expect_start_array_)
 	{
 	}
 };

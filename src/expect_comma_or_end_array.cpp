@@ -14,7 +14,7 @@ void expect_comma_or_end_array::end_array() {
 
 void expect_comma_or_end_array::comma() {
 	s.stack.pop();
-	s.stack.push(s.expect_comma_or_end_array);
+	s.stack.push(this);
 	s.stack.push(s.expect_value);
 }
 

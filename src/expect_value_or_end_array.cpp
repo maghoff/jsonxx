@@ -5,7 +5,12 @@
 
 namespace jsonxx {
 
-expect_value_or_end_array::expect_value_or_end_array(parser2_state& s_) : error_fallback("value or ]"), s(s_) { }
+expect_value_or_end_array::expect_value_or_end_array(parser2_state& s_) :
+	error_fallback("value or ]"),
+	s(s_),
+	expect_comma_or_end_array_state(s_)
+{
+}
 
 void expect_value_or_end_array::end_array() {
 	s.listener.end_array();
@@ -22,7 +27,7 @@ void expect_value_or_end_array::null() { fall_back_to_value(); s.stack.null(); }
 
 void expect_value_or_end_array::fall_back_to_value() {
 	s.stack.pop();
-	s.stack.push(s.expect_comma_or_end_array);
+	s.stack.push(&expect_comma_or_end_array_state);
 	s.stack.push(s.expect_value);
 }
 

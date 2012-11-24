@@ -2,6 +2,7 @@
 #define JSONXX_EXPECT_VALUE_OR_END_ARRAY_HPP
 
 #include "error_fallback.hpp"
+#include "expect_comma_or_end_array.hpp"
 
 #include "declspec.hpp"
 
@@ -9,9 +10,11 @@ namespace jsonxx {
 
 class parser2_state;
 
-struct JSONXX_DECLSPEC expect_value_or_end_array : error_fallback {
+class JSONXX_DECLSPEC expect_value_or_end_array : public error_fallback {
 	parser2_state& s;
+	expect_comma_or_end_array expect_comma_or_end_array_state;
 
+public:
 	expect_value_or_end_array(parser2_state&);
 
 	void end_array();
