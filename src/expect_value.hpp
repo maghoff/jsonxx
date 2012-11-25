@@ -4,20 +4,19 @@
 #include "error_fallback.hpp"
 #include "expect_start_object.hpp"
 #include "expect_start_array.hpp"
+#include "parser2_state.hpp"
 
 #include "declspec.hpp"
 
 namespace jsonxx {
 
-class parser2_state;
-
 class JSONXX_DECLSPEC expect_value : public error_fallback {
-	parser2_state& s;
+	parser2_state s;
 	expect_start_object expect_start_object_state;
 	expect_start_array expect_start_array_state;
 
 public:
-	expect_value(parser2_state&);
+	expect_value(stack_parser_state&);
 
 	void start_object();
 	void start_array();

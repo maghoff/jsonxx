@@ -6,11 +6,11 @@
 
 namespace jsonxx {
 
-expect_value::expect_value(parser2_state& s_) :
+expect_value::expect_value(stack_parser_state& s_) :
 	error_fallback("value"),
-	s(s_),
-	expect_start_object_state(s_),
-	expect_start_array_state(s_)
+	s(s_.stack, s_.listener, this),
+	expect_start_object_state(s),
+	expect_start_array_state(s)
 {
 }
 

@@ -12,13 +12,13 @@ class scanner_listener;
 
 class JSONXX_DECLSPEC parser2 {
 public:
-	parser2(object_listener&, scanner_listener* parser2_state::*initial_state = &parser2_state::expect_value);
+	parser2(object_listener&);
 	~parser2();
 
 	struct impl;
 
-	JSONXX_DEPRECATED("Temporary escape hatch. Will disappear")
-	scanner_listener& lol_get_scanner_listener();
+	void parse(const char* begin, const char* end);
+	void parse(const std::string&);
 
 	bool is_done() const;
 

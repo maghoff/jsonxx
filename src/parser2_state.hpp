@@ -9,23 +9,27 @@ class scanner_listener_stack;
 class object_listener;
 class scanner_listener;
 
-struct JSONXX_DECLSPEC parser2_state {
+struct JSONXX_DECLSPEC stack_parser_state {
 	scanner_listener_stack& stack;
 	object_listener& listener;
 
+	stack_parser_state(scanner_listener_stack& stack_, object_listener& listener_) :
+		stack(stack_),
+		listener(listener_)
+	{
+	}
+};
+
+struct JSONXX_DECLSPEC parser2_state : stack_parser_state {
 	scanner_listener* expect_value;
-	scanner_listener* expect_value_stream;
 
 	parser2_state(
 		scanner_listener_stack& stack_,
 		object_listener& listener_,
-		scanner_listener* expect_value_,
-		scanner_listener* expect_value_stream_
+		scanner_listener* expect_value_
 	) :
-		stack(stack_),
-		listener(listener_),
-		expect_value(expect_value_),
-		expect_value_stream(expect_value_stream_)
+		stack_parser_state(stack_, listener_),
+		expect_value(expect_value_)
 	{
 	}
 };

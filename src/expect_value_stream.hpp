@@ -2,17 +2,20 @@
 #define JSONXX_EXPECT_VALUE_STREAM_HPP
 
 #include "error_fallback.hpp"
+#include "expect_value.hpp"
 
 #include "declspec.hpp"
 
 namespace jsonxx {
 
-class parser2_state;
+class stack_parser_state;
 
-struct JSONXX_DECLSPEC expect_value_stream : error_fallback {
-	parser2_state& s;
+class JSONXX_DECLSPEC expect_value_stream : public error_fallback {
+	stack_parser_state& s;
+	expect_value expect_value_state;
 
-	expect_value_stream(parser2_state&);
+public:
+	expect_value_stream(stack_parser_state&);
 
 	void start_object();
 	void start_array();

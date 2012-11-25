@@ -6,17 +6,19 @@
 #include "test_util.hpp"
 #include "validating_filter.hpp"
 
+#include "scanner_listener_stack.hpp"
+#include "error_fallback.hpp"
+#include "expect_value_stream.hpp"
+
 namespace {
 
-JSONXX_DEPRECATED("Uses deprecated functionality parser2::lol_get_scanner_lisener")
 std::string roundtrip(const std::string& in) {
 	std::stringstream ss;
 	try {
 		jsonxx::compact_writer cw(ss);
 		jsonxx::validating_filter vf(&cw);
 		jsonxx::parser2 p(vf);
-		jsonxx::scanner s(p.lol_get_scanner_listener());
-		s.scan(in);
+		p.parse(in);
 	}
 	catch (std::exception& x) {
 		ss << 'X';
@@ -24,7 +26,6 @@ std::string roundtrip(const std::string& in) {
 	return ss.str();
 }
 
-JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool empty() {
 	bool ok = true;
 
@@ -34,7 +35,6 @@ bool empty() {
 	return ok;
 }
 
-JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool key_int() {
 	bool ok = true;
 
@@ -44,7 +44,6 @@ bool key_int() {
 	return ok;
 }
 
-JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool key_float() {
 	bool ok = true;
 
@@ -54,7 +53,6 @@ bool key_float() {
 	return ok;
 }
 
-JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool key_null() {
 	bool ok = true;
 
@@ -64,7 +62,6 @@ bool key_null() {
 	return ok;
 }
 
-JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool boolean_true() {
 	bool ok = true;
 
@@ -74,7 +71,6 @@ bool boolean_true() {
 	return ok;
 }
 
-JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool boolean_false() {
 	bool ok = true;
 
@@ -84,7 +80,6 @@ bool boolean_false() {
 	return ok;
 }
 
-JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool object_several_members() {
 	bool ok = true;
 
@@ -94,7 +89,6 @@ bool object_several_members() {
 	return ok;
 }
 
-JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool object_nested() {
 	bool ok = true;
 
@@ -104,7 +98,6 @@ bool object_nested() {
 	return ok;
 }
 
-JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool simple_string() {
 	bool ok = true;
 
@@ -114,7 +107,6 @@ bool simple_string() {
 	return ok;
 }
 
-JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool string_with_escapes() {
 	bool ok = true;
 
@@ -132,7 +124,6 @@ bool string_with_escapes() {
 	return ok;
 }
 
-JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool utf8_string() {
 	bool ok = true;
 
@@ -142,7 +133,6 @@ bool utf8_string() {
 	return ok;
 }
 
-JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool string_with_unicode_escapes() {
 	bool ok = true;
 
@@ -152,7 +142,6 @@ bool string_with_unicode_escapes() {
 	return ok;
 }
 
-JSONXX_DEPRECATED("Depends on deprecated parser2::lol_get_scanner_listener")
 bool incremental() {
 	bool ok = true;
 
@@ -160,40 +149,38 @@ bool incremental() {
 	jsonxx::compact_writer cw(ss);
 	jsonxx::validating_filter vf(&cw);
 	jsonxx::parser2 p(vf);
-	jsonxx::scanner s(p.lol_get_scanner_listener());
 
-	s.scan("{");
+	p.parse("{");
 	CHECK_EQUAL(ss.str(), "{");
 	CHECK_EQUAL(p.is_done(), false);
 
-	s.scan("\"t\":");
+	p.parse("\"t\":");
 	CHECK_EQUAL(ss.str(), "{\"t\":");
 	CHECK_EQUAL(p.is_done(), false);
 
-	s.scan("true,");
+	p.parse("true,");
 	CHECK_EQUAL(ss.str(), "{\"t\":true");
 	CHECK_EQUAL(p.is_done(), false);
 
-	s.scan("\"f\"");
+	p.parse("\"f\"");
 	CHECK_EQUAL(ss.str(), "{\"t\":true,\"f\":");
 	CHECK_EQUAL(p.is_done(), false);
 
-	s.scan(":fals");
+	p.parse(":fals");
 	CHECK_EQUAL(ss.str(), "{\"t\":true,\"f\":");
 	CHECK_EQUAL(p.is_done(), false);
 
-	s.scan("e");
+	p.parse("e");
 	CHECK_EQUAL(ss.str(), "{\"t\":true,\"f\":false");
 	CHECK_EQUAL(p.is_done(), false);
 
-	s.scan("}");
+	p.parse("}");
 	CHECK_EQUAL(ss.str(), "{\"t\":true,\"f\":false}");
 	CHECK_EQUAL(p.is_done(), true);
 
 	return ok;
 }
 
-JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool array() {
 	bool ok = true;
 
@@ -203,14 +190,23 @@ bool array() {
 	return ok;
 }
 
-JSONXX_DEPRECATED("Depends on deprecated roundtrip")
 bool value_stream() {
 	bool ok = true;
 
 	std::stringstream ss;
+
 	jsonxx::compact_writer cw(ss);
-	jsonxx::parser2 p(cw, &jsonxx::parser2_state::expect_value_stream);
-	jsonxx::scanner s(p.lol_get_scanner_listener());
+
+	jsonxx::scanner_listener_stack stack;
+	jsonxx::stack_parser_state state(stack, cw);
+
+	jsonxx::scanner s(stack);
+
+	jsonxx::error_fallback error_state("EOF");
+	jsonxx::expect_value_stream expect_value_stream(state);
+
+	stack.push(&error_state);
+	stack.push(&expect_value_stream);
 
 	s.scan("{ \"a\": 1 }{ \"b\": 2 }");
 	CHECK_EQUAL(ss.str(), "{\"a\":1},{\"b\":2}");
@@ -220,7 +216,6 @@ bool value_stream() {
 
 }
 
-JSONXX_DEPRECATED("Indirectly depends on deprecated roundtrip")
 bool parser2_tests() {
 	bool ok = true;
 
