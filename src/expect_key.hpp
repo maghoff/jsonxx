@@ -7,9 +7,10 @@
 
 namespace jsonxx {
 
-struct JSONXX_DECLSPEC expect_key : error_fallback {
+class JSONXX_DECLSPEC expect_key : public error_fallback {
 	parser2_state& s;
 
+public:
 	expect_key(parser2_state& s_);
 
 	void string(const std::string& key);

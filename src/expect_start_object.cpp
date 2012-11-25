@@ -5,12 +5,17 @@
 
 namespace jsonxx {
 
-expect_start_object::expect_start_object(parser2_state& s_) : error_fallback("{"), s(s_) { }
+expect_start_object::expect_start_object(parser2_state& s_) :
+	error_fallback("{"),
+	s(s_),
+	expect_key_or_end_object_state(s_)
+{
+}
 
 void expect_start_object::start_object() {
 	s.listener.start_object();
 	s.stack.pop();
-	s.stack.push(s.expect_key_or_end_object);
+	s.stack.push(&expect_key_or_end_object_state);
 }
 
 } // namespace jsonxx

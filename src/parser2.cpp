@@ -32,10 +32,6 @@ struct parser2::impl {
 	expect_value_stream expect_value_stream_state;
 
 	expect_start_object expect_start_object_state;
-	expect_key_or_end_object expect_key_or_end_object_state;
-	expect_key expect_key_state;
-	expect_colon expect_colon_state;
-	expect_comma_or_end_object expect_comma_or_end_object_state;
 
 	expect_start_array expect_start_array_state;
 
@@ -47,10 +43,6 @@ struct parser2::impl {
 		expect_value_state(state),
 		expect_value_stream_state(state),
 		expect_start_object_state(state),
-		expect_key_or_end_object_state(state),
-		expect_key_state(state),
-		expect_colon_state(state),
-		expect_comma_or_end_object_state(state),
 		expect_start_array_state(state),
 		state(
 			stack,
@@ -58,10 +50,6 @@ struct parser2::impl {
 			&expect_value_state,
 			&expect_value_stream_state,
 			&expect_start_object_state,
-			&expect_key_or_end_object_state,
-			&expect_key_state,
-			&expect_colon_state,
-			&expect_comma_or_end_object_state,
 			&expect_start_array_state
 		)
 	{

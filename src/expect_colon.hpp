@@ -7,9 +7,10 @@
 
 namespace jsonxx {
 
-struct JSONXX_DECLSPEC expect_colon : error_fallback {
+class JSONXX_DECLSPEC expect_colon : public error_fallback {
 	parser2_state& s;
 
+public:
 	expect_colon(parser2_state&);
 
 	void colon();
