@@ -26,14 +26,8 @@ struct parser2::impl {
 	object_listener& listener;
 
 	error_fallback error_state;
-
 	expect_value expect_value_state;
-
 	expect_value_stream expect_value_stream_state;
-
-	expect_start_object expect_start_object_state;
-
-	expect_start_array expect_start_array_state;
 
 	parser2_state state;
 
@@ -42,15 +36,11 @@ struct parser2::impl {
 		error_state("EOF"),
 		expect_value_state(state),
 		expect_value_stream_state(state),
-		expect_start_object_state(state),
-		expect_start_array_state(state),
 		state(
 			stack,
 			listener,
 			&expect_value_state,
-			&expect_value_stream_state,
-			&expect_start_object_state,
-			&expect_start_array_state
+			&expect_value_stream_state
 		)
 	{
 	}

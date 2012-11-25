@@ -2,6 +2,8 @@
 #define JSONXX_EXPECT_VALUE_HPP
 
 #include "error_fallback.hpp"
+#include "expect_start_object.hpp"
+#include "expect_start_array.hpp"
 
 #include "declspec.hpp"
 
@@ -9,9 +11,12 @@ namespace jsonxx {
 
 class parser2_state;
 
-struct JSONXX_DECLSPEC expect_value : error_fallback {
+class JSONXX_DECLSPEC expect_value : public error_fallback {
 	parser2_state& s;
+	expect_start_object expect_start_object_state;
+	expect_start_array expect_start_array_state;
 
+public:
 	expect_value(parser2_state&);
 
 	void start_object();

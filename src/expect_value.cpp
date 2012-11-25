@@ -6,17 +6,23 @@
 
 namespace jsonxx {
 
-expect_value::expect_value(parser2_state& s_) : error_fallback("value"), s(s_) { }
+expect_value::expect_value(parser2_state& s_) :
+	error_fallback("value"),
+	s(s_),
+	expect_start_object_state(s_),
+	expect_start_array_state(s_)
+{
+}
 
 void expect_value::start_object() {
 	s.stack.pop();
-	s.stack.push(s.expect_start_object);
+	s.stack.push(&expect_start_object_state);
 	s.stack.start_object();
 }
 
 void expect_value::start_array() {
 	s.stack.pop();
-	s.stack.push(s.expect_start_array);
+	s.stack.push(&expect_start_array_state);
 	s.stack.start_array();
 }
 

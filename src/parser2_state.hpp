@@ -16,23 +16,16 @@ struct JSONXX_DECLSPEC parser2_state {
 	scanner_listener* expect_value;
 	scanner_listener* expect_value_stream;
 
-	scanner_listener* expect_start_object;
-	scanner_listener* expect_start_array;
-
 	parser2_state(
 		scanner_listener_stack& stack_,
 		object_listener& listener_,
 		scanner_listener* expect_value_,
-		scanner_listener* expect_value_stream_,
-		scanner_listener* expect_start_object_,
-		scanner_listener* expect_start_array_
+		scanner_listener* expect_value_stream_
 	) :
 		stack(stack_),
 		listener(listener_),
 		expect_value(expect_value_),
-		expect_value_stream(expect_value_stream_),
-		expect_start_object(expect_start_object_),
-		expect_start_array(expect_start_array_)
+		expect_value_stream(expect_value_stream_)
 	{
 	}
 };
