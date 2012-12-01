@@ -77,3 +77,5 @@ tests/util.hpp
 tests/validating_filter.cpp
 tests/wscript
 wscript
+src/object_listener_stack.hpp
+src/object_listener_stack.cpp

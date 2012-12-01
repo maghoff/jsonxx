@@ -20,6 +20,7 @@ def build(bld):
 		'null_object_listener.cpp',
 		'object_filter.cpp',
 		'object_listener.cpp',
+		'object_listener_stack.cpp',
 		'parser.cpp',
 		'parser2.cpp',
 		'parse_error.cpp',
