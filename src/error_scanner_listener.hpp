@@ -1,5 +1,5 @@
-#ifndef JSONXX_ERROR_FALLBACK_HPP
-#define JSONXX_ERROR_FALLBACK_HPP
+#ifndef JSONXX_ERROR_SCANNER_LISTENER_HPP
+#define JSONXX_ERROR_SCANNER_LISTENER_HPP
 
 #include "scanner_listener.hpp"
 
@@ -7,12 +7,12 @@
 
 namespace jsonxx {
 
-class JSONXX_DECLSPEC error_fallback : public scanner_listener {
+class JSONXX_DECLSPEC error_scanner_listener : public scanner_listener {
 	std::string expected_description;
 	void throw_simple_error(const std::string& found);
 
 public:
-	error_fallback(const std::string& expected_description);
+	error_scanner_listener(const std::string& expected_description);
 
 	void start_object();
 	void end_object();
@@ -34,4 +34,4 @@ public:
 
 #undef JSONXX_DECLSPEC
 
-#endif // JSONXX_ERROR_FALLBACK_HPP
+#endif // JSONXX_ERROR_SCANNER_LISTENER_HPP

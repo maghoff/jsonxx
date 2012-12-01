@@ -5,7 +5,7 @@
 namespace jsonxx {
 
 expect_value_stream::expect_value_stream(stack_parser_state& s_) :
-	error_fallback("value"),
+	error_scanner_listener("value"),
 	s(s_),
 	expect_value_state(s_)
 {

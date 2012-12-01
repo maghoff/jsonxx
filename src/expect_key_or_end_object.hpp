@@ -1,7 +1,7 @@
 #ifndef JSONXX_EXPECT_KEY_OR_END_OBJECT_HPP
 #define JSONXX_EXPECT_KEY_OR_END_OBJECT_HPP
 
-#include "error_fallback.hpp"
+#include "error_scanner_listener.hpp"
 #include "expect_comma_or_end_object.hpp"
 #include "expect_colon.hpp"
 
@@ -11,7 +11,7 @@ namespace jsonxx {
 
 class parser2_state;
 
-class JSONXX_DECLSPEC expect_key_or_end_object : public error_fallback {
+class JSONXX_DECLSPEC expect_key_or_end_object : public error_scanner_listener {
 	parser2_state& s;
 	expect_comma_or_end_object expect_comma_or_end_object_state;
 	expect_colon expect_colon_state;

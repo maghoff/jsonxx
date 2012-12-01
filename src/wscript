@@ -2,46 +2,46 @@
 # -*- coding: utf-8 -*-
 
 def build(bld):
-    sources = [
-        'compact_writer.cpp',
-        'deserializer.cpp',
-        'error_fallback.cpp',
-        'expect_key_or_end_object.cpp',
-        'expect_start_object.cpp',
-        'expect_key.cpp',
-        'expect_colon.cpp',
-        'expect_comma_or_end_object.cpp',
-        'expect_start_array.cpp',
-        'expect_value_or_end_array.cpp',
-        'expect_comma_or_end_array.cpp',
-        'expect_value.cpp',
-        'expect_value_stream.cpp',
-        'indenting_writer.cpp',
-        'null_object_listener.cpp',
-        'object_filter.cpp',
-        'object_listener.cpp',
-        'parser.cpp',
-        'parser2.cpp',
-        'parse_error.cpp',
-        'scanner.cpp',
-        'scanner_listener.cpp',
-        'scanner_listener_stack.cpp',
-        'serializer.cpp',
-        'util.cpp',
-        'validating_filter.cpp',
-        'writer_base.cpp',
-        '../import/libjson/json.c',
-    ]
+	sources = [
+		'compact_writer.cpp',
+		'deserializer.cpp',
+		'error_scanner_listener.cpp',
+		'expect_key_or_end_object.cpp',
+		'expect_start_object.cpp',
+		'expect_key.cpp',
+		'expect_colon.cpp',
+		'expect_comma_or_end_object.cpp',
+		'expect_start_array.cpp',
+		'expect_value_or_end_array.cpp',
+		'expect_comma_or_end_array.cpp',
+		'expect_value.cpp',
+		'expect_value_stream.cpp',
+		'indenting_writer.cpp',
+		'null_object_listener.cpp',
+		'object_filter.cpp',
+		'object_listener.cpp',
+		'parser.cpp',
+		'parser2.cpp',
+		'parse_error.cpp',
+		'scanner.cpp',
+		'scanner_listener.cpp',
+		'scanner_listener_stack.cpp',
+		'serializer.cpp',
+		'util.cpp',
+		'validating_filter.cpp',
+		'writer_base.cpp',
+		'../import/libjson/json.c',
+	]
 
-    obj = bld.new_task_gen(
-        features='cc cxx cstaticlib',
-        source=sources,
-        target='jsonxx',
-        defines=['JSONXX_LINK_VARIANT=3'],
-    )
+	obj = bld.new_task_gen(
+		features='cc cxx cstaticlib',
+		source=sources,
+		target='jsonxx',
+		defines=['JSONXX_LINK_VARIANT=3'],
+	)
 
-    # This is a bit of a peculiar waf-thing. The build
-    # task is automatically configured to run in the
-    # default-configuration, but it needs this line in
-    # order to build in the debug-configuration:
-    obj.clone('debug')
+	# This is a bit of a peculiar waf-thing. The build
+	# task is automatically configured to run in the
+	# default-configuration, but it needs this line in
+	# order to build in the debug-configuration:
+	obj.clone('debug')

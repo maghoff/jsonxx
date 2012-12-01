@@ -7,7 +7,7 @@
 namespace jsonxx {
 
 expect_value::expect_value(stack_parser_state& s_) :
-	error_fallback("value"),
+	error_scanner_listener("value"),
 	s(s_.stack, s_.listener, this),
 	expect_start_object_state(s),
 	expect_start_array_state(s)

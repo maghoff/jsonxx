@@ -7,7 +7,7 @@
 #include "validating_filter.hpp"
 
 #include "scanner_listener_stack.hpp"
-#include "error_fallback.hpp"
+#include "error_scanner_listener.hpp"
 #include "expect_value_stream.hpp"
 
 namespace {
@@ -202,7 +202,7 @@ bool value_stream() {
 
 	jsonxx::scanner s(stack);
 
-	jsonxx::error_fallback error_state("EOF");
+	jsonxx::error_scanner_listener error_state("EOF");
 	jsonxx::expect_value_stream expect_value_stream(state);
 
 	stack.push(&error_state);

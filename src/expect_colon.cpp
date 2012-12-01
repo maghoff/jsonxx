@@ -4,7 +4,7 @@
 
 namespace jsonxx {
 
-expect_colon::expect_colon(parser2_state& s_) : error_fallback(":"), s(s_) { }
+expect_colon::expect_colon(parser2_state& s_) : error_scanner_listener(":"), s(s_) { }
 
 void expect_colon::colon() {
 	s.stack.pop();

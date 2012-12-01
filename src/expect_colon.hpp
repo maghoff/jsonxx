@@ -1,13 +1,13 @@
 #ifndef JSONXX_EXPECT_COLON_HPP
 #define JSONXX_EXPECT_COLON_HPP
 
-#include "error_fallback.hpp"
+#include "error_scanner_listener.hpp"
 
 #include "declspec.hpp"
 
 namespace jsonxx {
 
-class JSONXX_DECLSPEC expect_colon : public error_fallback {
+class JSONXX_DECLSPEC expect_colon : public error_scanner_listener {
 	parser2_state& s;
 
 public:

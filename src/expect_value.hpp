@@ -1,7 +1,7 @@
 #ifndef JSONXX_EXPECT_VALUE_HPP
 #define JSONXX_EXPECT_VALUE_HPP
 
-#include "error_fallback.hpp"
+#include "error_scanner_listener.hpp"
 #include "expect_start_object.hpp"
 #include "expect_start_array.hpp"
 #include "parser2_state.hpp"
@@ -10,7 +10,7 @@
 
 namespace jsonxx {
 
-class JSONXX_DECLSPEC expect_value : public error_fallback {
+class JSONXX_DECLSPEC expect_value : public error_scanner_listener {
 	parser2_state s;
 	expect_start_object expect_start_object_state;
 	expect_start_array expect_start_array_state;

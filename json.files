@@ -6,8 +6,8 @@ src/declspec.hpp
 src/deserializer.cpp
 src/deserializer.hpp
 src/documentation.md
-src/error_fallback.cpp
-src/error_fallback.hpp
+src/error_scanner_listener.cpp
+src/error_scanner_listener.hpp
 src/expect_colon.cpp
 src/expect_colon.hpp
 src/expect_comma_or_end_array.cpp

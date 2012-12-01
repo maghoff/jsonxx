@@ -6,7 +6,7 @@
 namespace jsonxx {
 
 expect_start_object::expect_start_object(parser2_state& s_) :
-	error_fallback("{"),
+	error_scanner_listener("{"),
 	s(s_),
 	expect_key_or_end_object_state(s_)
 {

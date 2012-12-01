@@ -6,7 +6,7 @@
 namespace jsonxx {
 
 expect_comma_or_end_object::expect_comma_or_end_object(parser2_state& s_) :
-	error_fallback(", or }"),
+	error_scanner_listener(", or }"),
 	s(s_),
 	expect_colon_state(s_),
 	expect_key_state(s_)

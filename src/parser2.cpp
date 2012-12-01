@@ -8,7 +8,7 @@
 #include "scanner.hpp"
 
 #include "parse_error.hpp"
-#include "error_fallback.hpp"
+#include "error_scanner_listener.hpp"
 #include "expect_value.hpp"
 
 namespace jsonxx {
@@ -20,7 +20,7 @@ struct parser2::impl {
 
 	scanner scanner_instance;
 
-	error_fallback error_state;
+	error_scanner_listener error_state;
 	expect_value expect_value_state;
 
 	impl(object_listener& listener_) :
